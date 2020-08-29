@@ -1,0 +1,110 @@
+@import "theme";
+
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: $font-description;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../img/restaurant-2.jpg");
+  background-size: cover;
+  box-shadow: $card-shadow;
+}
+
+.login {
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px;
+  min-width: 400px;
+  background: rgb(241, 234, 226);
+}
+
+.login__img {
+  height: 200px;
+  margin: 20px 10px;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0px;
+  h2 {
+    font-family: "Public Sans", sans-serif;
+    margin: 8px 0;
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.login__form--input {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login__form--input input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background-color: transparent;
+  padding: 0px 15px;
+  height: 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  &:focus {
+    border-bottom: 1px solid red;
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  &::after {
+    content: "";
+    border-bottom: 1px solid red;
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+::placeholder {
+  font-size: 16px;
+}
+
+.login__form--input input::after {
+  content: "";
+  border-bottom: 1px solid red;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.login__fomr--submit {
+  font-size: 16px;
+  margin: 30px 0;
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  background: $button-color;
+  box-shadow: $card-shadow;
+  outline: none;
+  border: none;
+  color: aliceblue;
+  &:active {
+    background: linear-gradient(
+      90deg,
+      rgba(237, 146, 61, 0.7) 1.98%,
+      rgba(255, 56, 56, 0.7) 100%
+    );
+  }
+
+  &:hover {
+    box-shadow: 0 0 8px rgba(237, 146, 61, 0.9);
+  }
+}

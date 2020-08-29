@@ -1,4 +1,5 @@
 import React from 'react';
+//import { firebaseApp } from './utils/firebase'
 import AuthenticationPage from './pages/AuthenticationPage'
 
 function App() {

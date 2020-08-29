@@ -1,10 +1,11 @@
 import React from 'react'
+import icono from '../assets/icon/acomerya-logo-name.svg'
 
 function AuthenticationPage() {
     return (
         <div className="container">
             <div className="login">
-                {/* <img className="login__img" src={icono} alt="Imagen-Acomerya"></img> */}
+                <img className="login__img" src={icono} alt="Imagen-Acomerya"></img>
                 <form className="login__form">
                     <h2>Inicia sesión</h2>
                     <div className="login__form--input">
