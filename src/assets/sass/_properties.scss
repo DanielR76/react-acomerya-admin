@@ -1,0 +1,38 @@
+//import fonts
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+//fonts
+$font-1: "Ubuntu", sans-serif;
+$font-2: "Public Sans", sans-serif;
+
+//colors
+$color-black-1: rgba(0, 0, 0, 0.8);
+$color-black-2: rgba(0, 0, 0, 0.7);
+$color-black-3: rgba(0, 0, 0, 0.6);
+$color-orange-1: rgba(241, 101, 34, 1);
+$color-orange-2: rgba(255, 139, 77, 1);
+$color-orange-3: rgba(255, 170, 117, 1);
+$color-orange-4: rgba(253, 235, 208, 1);
+$color-orange-5: rgba(247, 234, 234, 0.42);
+$color-gray-1: rgba(217, 217, 227, 1);
+$color-gray-2: rgba(232, 232, 242, 1);
+$color-gray-3: rgba(245, 245, 252, 1);
+
+//shadows
+$nav-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+$card-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+$card-shadow-t: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+$button-shadow: 0 0 8px rgba(237, 146, 61, 0.9);
+
+//buttons
+$button-color: linear-gradient(
+  90deg,
+  rgba(237, 146, 61, 0.9) 1.98%,
+  rgba(255, 56, 56, 0.9) 100%
+);
+$button-color-t: linear-gradient(
+  90deg,
+  rgba(237, 146, 61, 0.7) 1.98%,
+  rgba(255, 56, 56, 0.7) 100%
+);

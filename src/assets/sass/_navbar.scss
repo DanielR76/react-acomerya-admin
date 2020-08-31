@@ -1,0 +1,72 @@
+@import "properties";
+
+.main {
+  display: flex;
+}
+
+.navbar {
+  height: 100vh;
+  width: 250px;
+  background-color: white;
+}
+
+.navbar__container--head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 12px;
+  img {
+    height: 50%;
+    width: 50%;
+  }
+  h2 {
+    margin: 2px 0 15px 0;
+    color: $color-black-1;
+  }
+}
+
+.navbar__container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 0 0 30px;
+  .navbar__items {
+    margin-top: 50px;
+    width: 100%;
+    .navbar__items--route {
+      display: flex;
+      height: 50px;
+      list-style: none;
+      &:hover {
+        border-radius: 10px 0 0 10px;
+        background-color: $color-orange-5;
+      }
+      a {
+        height: 100%;
+        width: 100%;
+        margin-left: 5px;
+        color: $color-black-2;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        span {
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+}
+
+.section {
+  height: 100vh;
+  width: 100vw;
+  .section__container {
+    margin-top: 8px;
+    height: 100%;
+    width: 100%;
+    background-color: $color-orange-5;
+    border-radius: 20px;
+  }
+}

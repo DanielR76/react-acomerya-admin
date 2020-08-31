@@ -1,1 +1,13 @@
+@import "sass/properties";
 @import "sass/login";
+@import "sass/navbar";
+
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: $font-2;
+}
+
+h1 {
+  font-size: 25px;
+}

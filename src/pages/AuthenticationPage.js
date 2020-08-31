@@ -14,7 +14,7 @@ function AuthenticationPage() {
                     <div className="login__form--input">
                         <input type="password" required placeholder="Contraseña"></input>
                     </div>
-                    <button type="submit" className="login__fomr--submit">Continuar</button>
+                    <button type="submit" className="login__form--submit">Continuar</button>
                 </form>
             </div>
         </div>
