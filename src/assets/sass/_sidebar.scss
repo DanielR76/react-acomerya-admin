@@ -4,13 +4,13 @@
   display: flex;
 }
 
-.navbar {
+.sidebar {
   height: 100vh;
   width: 250px;
   background-color: white;
 }
 
-.navbar__container--head {
+.sidebar__container--head {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,16 +26,16 @@
   }
 }
 
-.navbar__container {
+.sidebar__container {
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
   padding: 0 0 0 30px;
-  .navbar__items {
+  .sidebar__items {
     margin-top: 50px;
     width: 100%;
-    .navbar__items--route {
+    .sidebar__items--route {
       display: flex;
       height: 50px;
       list-style: none;
@@ -63,7 +63,6 @@
   height: 100vh;
   width: 100vw;
   .section__container {
-    margin-top: 8px;
     height: 100%;
     width: 100%;
     background-color: $color-orange-5;

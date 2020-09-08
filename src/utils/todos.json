@@ -1,0 +1,23 @@
+[
+  {
+    "nombrePlato": "ceviche",
+    "descripcion": "Delicioso plato de ceviche",
+    "ingredientes": ["ingrediente1", "ingrediente2"],
+    "imagen": "C:/Users/victor.rodriguez/Documents/Workspace/Acomerya-Front/Acomerya---Frontend-Web/src/assets/img/dish-1.jpg",
+    "precio": 2500
+  },
+  {
+    "nombrePlato": "Camaron",
+    "descripcion": "Delicioso plato de camaron",
+    "ingredientes": ["ingrediente1", "ingrediente2"],
+    "imagen": "C:/Users/victor.rodriguez/Documents/Workspace/Acomerya-Front/Acomerya---Frontend-Web/src/assets/img/dish-1.jpg",
+    "precio": 2500
+  },
+  {
+    "nombrePlato": "Cangrejo",
+    "descripcion": "Delicioso plato de cangrejo",
+    "ingredientes": ["ingrediente1", "ingrediente2"],
+    "imagen": "C:/Users/victor.rodriguez/Documents/Workspace/Acomerya-Front/Acomerya---Frontend-Web/src/assets/img/dish-1.jpg",
+    "precio": 2500
+  }
+]

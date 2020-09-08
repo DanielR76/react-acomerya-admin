@@ -1,10 +1,10 @@
 import React from 'react'
-import NavBar from '../components/NavBar'
+import SideBar from '../components/SideBar'
 
 function AdminLayout(props) {
     return (
         <React.Fragment>
-            <NavBar />
+            <SideBar />
             {props.children}
         </React.Fragment>
     )

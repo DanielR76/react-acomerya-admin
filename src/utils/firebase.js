@@ -1,13 +1,17 @@
 import firebase from 'firebase/app'
+import 'firebase/firestore'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAJz1ZBTFz6Px9Y_v2J0ytOLI8MZCA5XBc",
-    authDomain: "a-comer-ya.firebaseapp.com",
-    databaseURL: "https://a-comer-ya.firebaseio.com",
-    projectId: "a-comer-ya",
-    storageBucket: "a-comer-ya.appspot.com",
-    messagingSenderId: "250316305452",
-    appId: "1:250316305452:web:f3eb174e7e9e2f2e600d89"
+    apiKey: "AIzaSyBzdGz1BYTCIZyRpxUsu0GdCmR7_RpbYmo",
+    authDomain: "acomerya-app.firebaseapp.com",
+    databaseURL: "https://acomerya-app.firebaseio.com",
+    projectId: "acomerya-app",
+    storageBucket: "acomerya-app.appspot.com",
+    messagingSenderId: "42823629619",
+    appId: "1:42823629619:web:946d2b4bfd6ba1653d5c46"
+
 };
 
-export const firebaseApp = firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig)
+export const db = firebaseApp.firestore()
+

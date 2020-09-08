@@ -1,0 +1,14 @@
+.modaldish__container {
+  display: flex;
+  flex-direction: row;
+  .modaldish__container-input {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 15px;
+  }
+}
+
+#id_header_modal {
+  padding: 5px 16px;
+  border-bottom: 0;
+}

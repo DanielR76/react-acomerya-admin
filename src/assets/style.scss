@@ -1,13 +1,14 @@
 @import "sass/properties";
 @import "sass/login";
-@import "sass/navbar";
+@import "sass/sidebar";
+@import "sass/dishes";
 
 * {
-  margin: 0px;
-  padding: 0px;
+  /*   margin: 0px !important;
+  padding: 0px !important; */
   font-family: $font-2;
 }
 
-h1 {
-  font-size: 25px;
+#root {
+  display: flex;
 }
