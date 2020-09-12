@@ -4,7 +4,7 @@ import ModalDish from '../components/ModalDish'
 import DishesCard from '../components/DishesCard'
 
 
-function DishesPage() {
+function DishesPage(props) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);

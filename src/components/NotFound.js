@@ -3,7 +3,7 @@ import React from 'react'
 function NonFound() {
     return (
         <div>
-            Non found
+            Page Not found
         </div>
     )
 }
