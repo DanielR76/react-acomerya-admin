@@ -15,7 +15,7 @@ function ModalDish(props) {
         ingredient: "",
         price: "",
         restaurant: 123465,
-        status: "active"
+        status: true
     }
 
     const [values, setValues] = useState(initialStateValues)
@@ -56,6 +56,7 @@ function ModalDish(props) {
     }
 
     const handleSubmit = e => {
+        console.log('se envia valor')
         e.preventDefault()
         props.addOrEdit(values)
         setValues({ ...initialStateValues })
@@ -129,7 +130,7 @@ function ModalDish(props) {
                     </form>
                 </Modal.Body>
             </Modal>
-        </div>
+        </div >
     )
 
 }

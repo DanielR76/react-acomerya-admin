@@ -15,7 +15,7 @@ function DishesPage(props) {
     const [show, setShow] = useState(false)
     const handleClose = () => {
         setShow(false)
-        setCurrentDish('')
+        setTimeout(() => { setCurrentDish('') }, 1000)
     }
     const handleShow = () => setShow(true)
 
@@ -42,11 +42,13 @@ function DishesPage(props) {
 
     //Crear o editar platos
     const addOrEditDish = async (linkObject) => {
+        console.log('llea el dato')
         if (currentDish === '') {
             await db.collection('dishDocument').doc().set(linkObject)
                 .then(() => console.log("Se cargó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
         } else {
+            console.log(linkObject)
             await db.collection('dishDocument').doc(currentDish).update(linkObject)
                 .then(() => console.log("Se actualizó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
@@ -112,13 +114,7 @@ function DishesPage(props) {
                         {platos}
                     </div>
                 </div>
-                <ModalDish
-                    show={show}
-                    close={handleClose}
-                    {...({
-                        addOrEdit: addOrEditDish,
-                        idDish: currentDish
-                    })} />
+                <ModalDish show={show} close={handleClose} {...({ addOrEdit: addOrEditDish, idDish: currentDish })} />
             </div>
             <div className="container__add">
             </div>
