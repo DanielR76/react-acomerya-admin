@@ -6,14 +6,18 @@ import EditIcon from '@material-ui/icons/Edit'
 import AddIcon from '@material-ui/icons/Add'
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+
 import { db } from '../utils/firebase'
 
 function DishesPage(props) {
 
     //Mostrar u ocultar modal
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [show, setShow] = useState(false)
+    const handleClose = () => {
+        setShow(false)
+        setCurrentDish('')
+    }
+    const handleShow = () => setShow(true)
 
     //Obtener platos de firebase
     const [dish, setDish] = useState([])
@@ -82,6 +86,7 @@ function DishesPage(props) {
                                         deleteDish(todo.id)
                                     }} />
                             </IconButton>
+
                         </Card.Title>
 
                     </Card.Body>
@@ -92,6 +97,7 @@ function DishesPage(props) {
 
     return (
         <div className="container__dishes">
+
             <div className="container__cards">
                 <Fab
                     color="primary"
@@ -106,10 +112,15 @@ function DishesPage(props) {
                         {platos}
                     </div>
                 </div>
-                <ModalDish show={show} close={handleClose} /* addOrEdit={addOrEditDish} */ {...({ addOrEdit: addOrEditDish, idDish: currentDish })} />
+                <ModalDish
+                    show={show}
+                    close={handleClose}
+                    {...({
+                        addOrEdit: addOrEditDish,
+                        idDish: currentDish
+                    })} />
             </div>
             <div className="container__add">
-
             </div>
         </div>
     )

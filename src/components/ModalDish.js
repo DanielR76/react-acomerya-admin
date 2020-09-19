@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Card } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch';
 import { db, storage } from '../utils/firebase'
 
 function ModalDish(props) {
@@ -44,10 +46,12 @@ function ModalDish(props) {
             () => { storage.ref("images").child(file.name).getDownloadURL().then(url => setValues({ ...values, imagePath: url })) })
     }
 
-    //Guardar los textos en values
+    //Guardar los datos en values
     const handleChange = (e) => {
         setValues({
-            ...values, [e.target.name]: e.target.value,
+            ...values,
+            [e.target.name]: e.target.value,
+            status: e.target.checked
         })
     }
 
@@ -56,6 +60,7 @@ function ModalDish(props) {
         props.addOrEdit(values)
         setValues({ ...initialStateValues })
     }
+
 
     return (
         <div className="modaldish" >
@@ -108,6 +113,13 @@ function ModalDish(props) {
                                 value={values.price}
                                 onChange={handleChange}
                                 required="true" />
+                            <FormControlLabel
+                                control={<Switch
+                                    checked={values.status}
+                                    onChange={handleChange}
+                                    name="status" />}
+                            />
+
                             <button
                                 className="login__form--submit"
                                 onClick={props.close}>
