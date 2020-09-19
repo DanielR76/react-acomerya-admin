@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Card } from 'react-bootstrap'
-import Imagen from '../assets/img/hotel-el-auca.jpg'
 import { db } from '../utils/firebase'
 
 
-function DishesCard() {
+function DishesCard(props) {
 
-    const [stateDish, setStateDish] = useState([])
+    const [dish, setDish] = useState([])
 
     const getPlatos = async () => {
-
-        db.collection('dishDocument').onSnapshot((querySnapshot) => {
-            const docs = []
-            querySnapshot.forEach(doc => {
-                docs.push({
-                    ...doc.data(),
-                    id: doc.id
+        db.collection("dishDocument").where("restaurant", "==", 123465)
+            .onSnapshot(querySnapshot => {
+                const state = []
+                querySnapshot.forEach((doc) => {
+                    state.push({
+                        ...doc.data(),
+                        id: doc.id
+                    })
                 })
+                setDish(state)
             })
-            setStateDish(docs);
-        });
+        /*    .catch((error) => {
+               console.log("Error obteniendo documentos: ", error)
+           }) */
     }
 
     useEffect(() => {
-        getPlatos();
+        getPlatos()
     }, []);
 
-
-    const platos = stateDish.map((todo, i) => {
+    const platos = props.map((todo, i) => {
         return (
             <div className="col-md-3">
                 <div className="card mt-3">
@@ -41,7 +42,6 @@ function DishesCard() {
                     </Card.Body>
                 </div>
             </div>
-
         )
     })
 
@@ -53,6 +53,5 @@ function DishesCard() {
         </div>
     )
 }
-
 
 export default DishesCard

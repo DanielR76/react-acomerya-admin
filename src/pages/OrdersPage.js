@@ -1,13 +1,10 @@
-import React, { useState } from 'react'
-import { db } from '../utils/firebase'
+import React from 'react'
 
 
 function OrdersPage() {
-
-
     return (
         <h1>
-
+            <label>Pedidos</label>
         </h1>
     )
 

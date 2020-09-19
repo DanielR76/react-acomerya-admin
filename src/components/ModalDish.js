@@ -1,75 +1,79 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Card } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
 import { db, storage } from '../utils/firebase'
 
 function ModalDish(props) {
 
-    const [imagen, setImage] = useState(null)
-
     //Inicializar estado
-    const state = {
+    const initialStateValues = {
+        description: "",
+        dishName: "",
+        imagePath: null,
+        ingredient: "",
+        price: "",
         restaurant: 123465,
-        status: "active",
-        imagePath: null
+        status: "active"
     }
 
-    //funcion para guardar imagen en storage y luego traer la ruta
+    const [values, setValues] = useState(initialStateValues)
+
+    //Obtener plato por el id
+    const getDishById = async (id) => {
+        console.log(id)
+        const doc = await db.collection('dishDocument').doc(id).get()
+        setValues({ ...doc.data() })
+    }
+
+    useEffect(() => {
+        if (props.idDish === '') {
+            setValues({ ...initialStateValues })
+        } else {
+            getDishById(props.idDish)
+        }
+    }, [props.idDish])
+
+    //Guardar imagen en storage y luego traer la ruta
     const handleLoad = e => {
         const file = e.target.files[0]
-        console.log(e.target.files[0])
         const uploadImage = storage.ref(`images/${file.name}`)
         const task = uploadImage.put(file)
 
         task.on('state_changed', (snapshot) => { },
-            (error) => {
-                console.error(error.message)
-            }, () => {
-                storage.ref("images").child(file.name).getDownloadURL().then(url => setImage(url))
-            })
+            (error) => { console.error(error.message) },
+            () => { storage.ref("images").child(file.name).getDownloadURL().then(url => setValues({ ...values, imagePath: url })) })
     }
 
-    //funcion para agregar platos a la coleccion
-    const addDish = async (linkObject) => {
-        console.log('nuevo plato')
-        await db.collection('dishDocument').doc().set(linkObject)
-    }
-
-
-    const [values, setValues] = useState(state)
-
-    //Funcion para guardar la imagen y los textos en values
+    //Guardar los textos en values
     const handleChange = (e) => {
         setValues({
-            ...values,
-            [e.target.name]: e.target.value,
-            imagePath: imagen
+            ...values, [e.target.name]: e.target.value,
         })
     }
 
     const handleSubmit = e => {
         e.preventDefault()
-        addDish(values)
-        console.log(values)
+        props.addOrEdit(values)
+        setValues({ ...initialStateValues })
     }
 
     return (
         <div className="modaldish" >
             <Modal
-                show={props.mostrar}
-                onHide={props.ocultar}
+                show={props.show}
+                onHide={props.close}
                 backdrop="static"
                 centered
                 dialogClassName="modal-90w">
 
                 <Modal.Header closeButton id="id_header_modal">
-                    <Modal.Title>Agregar plato</Modal.Title>
+                    <Modal.Title>{props.idDish === '' ? 'Agregar plato' : 'Editar plato'}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body >
                     <form className="modaldish__container" onSubmit={handleSubmit}  >
                         <Card style={{ width: '18rem' }}>
-                            <Card.Img src={imagen}></Card.Img>
+                            <Card.Img src={values.imagePath}></Card.Img>
                             <input
                                 type="file"
                                 onChange={handleLoad.bind(this)} />
@@ -79,14 +83,14 @@ function ModalDish(props) {
                                 id="standard-basic"
                                 label="Nombre plato"
                                 name="dishName"
-                                value={state.dishName}
+                                value={values.dishName}
                                 onChange={handleChange}
                                 required="true" />
                             <TextField
                                 id="standard-textarea"
                                 label="Descripción"
                                 name="description"
-                                value={state.description}
+                                value={values.description}
                                 multiline
                                 onChange={handleChange}
                                 required="true" />
@@ -94,30 +98,24 @@ function ModalDish(props) {
                                 id="standard-basic"
                                 label="Ingredientes"
                                 name="ingredient"
-                                value={state.ingredient}
+                                value={values.ingredient}
                                 onChange={handleChange}
                                 required="true" />
                             <TextField
                                 id="standard-basic"
                                 label="Precio"
                                 name="price"
-                                value={state.price}
+                                value={values.price}
                                 onChange={handleChange}
                                 required="true" />
                             <button
                                 className="login__form--submit"
-                                onClick={props.ocultar}>
-                                Continuar
+                                onClick={props.close}>
+                                {props.idDish === '' ? 'Crear' : 'Guardar'}
                             </button>
                         </div>
                     </form>
                 </Modal.Body>
-                {/*                 <form >
-                    <Modal.Footer >
-                        <button className="login__form--submit">Continuar</button>
-                    </Modal.Footer>
-                </form> */}
-
             </Modal>
         </div>
     )
