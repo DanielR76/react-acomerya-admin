@@ -9,7 +9,7 @@ function AuthenticationPage() {
                 <img className="login__img" src={icono} alt="Imagen-Acomerya"></img>
                 <form className="login__form">
                     <h2>Inicia sesión</h2>
-                    {/*                     <div className="login__form--input">
+                    {/* <div className="login__form--input">
                         <input type="text" required placeholder="Correo electrónico"></input>
                     </div>
                     <div className="login__form--input">

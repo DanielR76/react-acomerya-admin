@@ -12,3 +12,71 @@
   padding: 5px 16px;
   border-bottom: 0;
 }
+
+.container__dishes {
+  display: flex;
+  flex-direction: row;
+
+  .container__cards {
+    width: 75%;
+    margin: 20px;
+  }
+  .container__add {
+    width: 25%;
+    margin: 20px;
+    .container__add--aditions {
+      width: 100%;
+      padding: 5px;
+    }
+  }
+}
+
+.tittle__header {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.container__add--aditions--values {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: white;
+  border-radius: 5px;
+  font-size: 14;
+  margin-top: 10px;
+  .container__add--aditions--form {
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .container__delete__edit--dish {
+    height: 60%;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.container__form {
+  .login__form--submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+  }
+}
+
+.form {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .login__form--submit {
+    width: 150px;
+  }
+  .form__add-edit {
+    width: 90%;
+  }
+}

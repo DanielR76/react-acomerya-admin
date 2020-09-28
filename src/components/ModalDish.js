@@ -14,7 +14,7 @@ function ModalDish(props) {
         imagePath: null,
         ingredient: "",
         price: "",
-        restaurant: 123465,
+        idRestaurant: 123465,
         status: true
     }
 
@@ -22,7 +22,6 @@ function ModalDish(props) {
 
     //Obtener plato por el id
     const getDishById = async (id) => {
-        console.log(id)
         const doc = await db.collection('dishDocument').doc(id).get()
         setValues({ ...doc.data() })
     }
@@ -47,7 +46,7 @@ function ModalDish(props) {
     }
 
     //Guardar los datos en values
-    const handleChange = (e) => {
+    const handleChange = e => {
         setValues({
             ...values,
             [e.target.name]: e.target.value,
