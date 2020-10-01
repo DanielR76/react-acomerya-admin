@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
-import { db } from '../utils/firebase'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
+import * as firebase from 'firebase'
+import { db } from '../utils/firebase'
 
 const AdditionalDish = (props) => {
 
     const initialStateValues = {
-        idRestaurant: 123465,
+        idRestaurant: firebase.auth().currentUser.uid,
         name: "",
         price: ""
     }
@@ -20,7 +21,7 @@ const AdditionalDish = (props) => {
     //Obtener adiciones de firebase
     const [additional, setAdditional] = useState([])
     const getAdditional = async () => {
-        db.collection("additionalDocument").where("idRestaurant", "==", 123465)
+        db.collection("additionalDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid)
             .onSnapshot(querySnapshot => {
                 const state = []
                 querySnapshot.forEach((doc) => {

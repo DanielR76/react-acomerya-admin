@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch';
 import { db, storage } from '../utils/firebase'
+import * as firebase from 'firebase'
 
 function ModalDish(props) {
 
@@ -14,7 +15,7 @@ function ModalDish(props) {
         imagePath: null,
         ingredient: "",
         price: "",
-        idRestaurant: 123465,
+        idRestaurant: firebase.auth().currentUser.uid,
         status: true
     }
 
@@ -57,6 +58,7 @@ function ModalDish(props) {
     const handleSubmit = e => {
         console.log('se envia valor')
         e.preventDefault()
+        console.log(values)
         props.addOrEdit(values)
         setValues({ ...initialStateValues })
     }

@@ -1,11 +1,15 @@
 import React from 'react'
+import * as firebase from 'firebase'
 
 
 function OrdersPage() {
     return (
-        <h1>
+        <div>
             <label>Pedidos</label>
-        </h1>
+            <button
+                onClick={() => { firebase.auth().signOut() }}
+            >Cerrar sesión</button>
+        </div>
     )
 
 }

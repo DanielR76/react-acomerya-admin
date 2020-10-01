@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import ModalDish from '../components/ModalDish'
 import AdditionalDish from '../components/AdditionalDish'
-import { Fab } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
 import EditIcon from '@material-ui/icons/Edit'
 import AddIcon from '@material-ui/icons/Add'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-
+import * as firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function DishesPage() {
@@ -24,7 +22,7 @@ function DishesPage() {
     //Obtener platos de firebase
     const [dish, setDish] = useState([])
     const getDishes = async () => {
-        db.collection("dishDocument").where("idRestaurant", "==", 123465)
+        db.collection("dishDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid)
             .onSnapshot(querySnapshot => {
                 const state = []
                 querySnapshot.forEach((doc) => {
@@ -44,7 +42,6 @@ function DishesPage() {
 
     //Crear o editar platos
     const addOrEditDish = async (linkObject) => {
-        console.log('llea el dato')
         if (currentDish === '') {
             await db.collection('dishDocument').doc().set(linkObject)
                 .then(() => console.log("Se cargó correctamente al documento"))
@@ -102,7 +99,6 @@ function DishesPage() {
 
     return (
         <div className="container__dishes">
-
             <div className="container__cards">
                 <h6 className='tittle__header'>Platos</h6>
                 <IconButton

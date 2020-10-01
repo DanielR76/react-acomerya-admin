@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { BiDish, BiBook, BiCookie } from 'react-icons/bi'
 import profile from '../assets/icon/profile.svg'
 import { IconContext } from 'react-icons'
+import * as firebase from 'firebase'
 
 function sidebar() {
 
@@ -58,6 +59,7 @@ function sidebar() {
                     </div>
                 </section> */}
             </IconContext.Provider>
+
         </div>
     )
 }
