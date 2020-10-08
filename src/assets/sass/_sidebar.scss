@@ -11,18 +11,31 @@
 }
 
 .sidebar__container--head {
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   font-size: 12px;
+
   img {
+    margin: 10px 0;
     height: 50%;
     width: 50%;
+    border-radius: 5px;
   }
-  h2 {
-    margin: 2px 0 15px 0;
-    color: $color-black-1;
+
+  a {
+    .sidebar__container--name {
+      margin: 2px 0 15px 0;
+      color: $color-black-1;
+    }
+    &:hover {
+      text-decoration: none;
+      -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+      transform: scale(1.1);
+    }
   }
 }
 

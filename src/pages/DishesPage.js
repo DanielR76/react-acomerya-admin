@@ -65,33 +65,39 @@ function DishesPage() {
     //estructura de cards de platos
     const DishesCard = dish.map((todo, i) => {
         return (
-            <div className="col-md-4">
-                <div className="card mt-4">
-                    <Card.Img variant="top" src={todo.imagePath} />
-                    <Card.Body>
-                        <Card.Title>
-                            {todo.dishName}
-                            <IconButton
-                                aria-label="editar"
-                                onClick={() => {
-                                    setCurrentDish(todo.id)
-                                    handleShow()
-                                }}>
-                                <EditIcon
-                                    size="small"
-                                    color="primary"
-                                />
-                            </IconButton>
-                            <IconButton
-                                aria-label="eliminar"
-                                onClick={() => { deleteDish(todo.id) }}>
-                                <DeleteIcon
-                                    size="small"
-                                    color="secondary"
-                                />
-                            </IconButton>
-                        </Card.Title>
-                    </Card.Body>
+            <div className="card__dish__cont" key={`0${todo.id}`} >
+                <img
+                    key={`1${todo.id}`}
+                    className="card__dish--image"
+                    src={todo.imagePath}
+                    alt="imageDish" />
+                <div className="card__dish--cont">
+                    <div className="dish__name" key={`2${todo.id}`}>
+                        {todo.dishName}
+                    </div>
+                    <div className="dish__method">
+                        <IconButton
+                            key={`3${todo.id}`}
+                            aria-label="editar"
+                            onClick={() => {
+                                setCurrentDish(todo.id)
+                                handleShow()
+                            }}>
+                            <EditIcon
+                                size="small"
+                                color="primary"
+                            />
+                        </IconButton>
+                        <IconButton
+                            key={`4${todo.id}`}
+                            aria-label="eliminar"
+                            onClick={() => { deleteDish(todo.id) }}>
+                            <DeleteIcon
+                                size="small"
+                                color="secondary"
+                            />
+                        </IconButton>
+                    </div>
                 </div>
             </div>
         )
@@ -101,16 +107,17 @@ function DishesPage() {
         <div className="container__dishes">
             <div className="container__cards">
                 <h6 className='tittle__header'>Platos</h6>
-                <IconButton
-                    color="primary"
-                    aria-label="Añadir plato"
-                    onClick={handleShow}>
-                    <AddIcon />
-                </IconButton>
-                <div className="form-group">
-                </div>
-                <div className="containerext">
-                    <div className="row mt-3">
+                <div className="card__main">
+                    <div className="card__button--add">
+                        <IconButton
+                            color="primary"
+                            aria-label="Añadir plato"
+                            onClick={handleShow}>
+                            <AddIcon />
+                        </IconButton>
+                    </div>
+
+                    <div className="card__dish">
                         {DishesCard}
                     </div>
                 </div>

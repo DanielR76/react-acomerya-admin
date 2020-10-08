@@ -6,7 +6,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import * as firebase from 'firebase'
 import { db } from '../utils/firebase'
 
-const AdditionalDish = (props) => {
+function AdditionalDish(props) {
 
     const initialStateValues = {
         idRestaurant: firebase.auth().currentUser.uid,
@@ -90,18 +90,19 @@ const AdditionalDish = (props) => {
             <div className="container__add--aditions--values">
                 <div className="container__add--aditions--form">
                     <div >
-                        <label className="container__add--addition">
+                        <label className="container__add--addition" key={`name ${val}`}>
                             {val.name}
                         </label>
                     </div>
                     <div>
-                        <label className="container__add--price">
+                        <label className="container__add--price" key={`price ${val}`}>
                             {val.price}
                         </label>
                     </div>
                 </div>
                 <div className="container__delete__edit--dish">
                     <IconButton
+                        key={`edit ${val}`}
                         aria-label="editar"
                         onClick={() => {
                             getAdditionById(val.id)
@@ -113,6 +114,7 @@ const AdditionalDish = (props) => {
                         />
                     </IconButton>
                     <IconButton
+                        key={`delete ${val}`}
                         aria-label="eliminar"
                         onClick={() => deleteAddition(val.id)}>
                         <DeleteIcon
@@ -127,7 +129,7 @@ const AdditionalDish = (props) => {
     })
 
     return (
-        <div className="container__form">
+        <div className="container__form" key="1">
             {aditionalsCard}
             {currentId || formAddition ?
                 <form

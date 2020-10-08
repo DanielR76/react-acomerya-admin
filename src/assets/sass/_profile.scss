@@ -1,0 +1,77 @@
+@import "properties";
+
+.profile__main {
+  display: flex;
+  flex-direction: row;
+  .codes {
+    width: 25%;
+  }
+  .cards {
+    width: 75%;
+    padding: 30px 0;
+    .tittle__image {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .save__image {
+      width: 150px;
+      margin: 0 30%;
+    }
+  }
+}
+
+.image__card {
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  .card__container {
+    width: 31%;
+    margin: 5px;
+    position: relative;
+
+    .sidebar__container--img {
+      height: 100%;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .delete__img {
+      position: absolute;
+      top: 75%;
+      right: 0px;
+    }
+  }
+}
+
+.codes {
+  padding: 30px 15px;
+  .code_contain {
+    div {
+      margin-top: 10px;
+    }
+    .tittle__code {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .code__item {
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: $card-shadow;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+
+  .form__add {
+    padding: 8px 18%;
+    .form__add--table {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+    }
+  }
+}

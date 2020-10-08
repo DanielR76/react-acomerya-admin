@@ -15,7 +15,6 @@
 
 .container__dishes {
   display: flex;
-  flex-direction: row;
 
   .container__cards {
     width: 75%;
@@ -37,11 +36,39 @@
   justify-content: center;
 }
 
+.card__main {
+  .card__dish {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    //justify-content: space-between;
+    cursor: default;
+    .card__dish__cont {
+      width: 30%;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: $card-shadow;
+      .dish__method {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    img {
+      width: 100%;
+      height: 110px;
+    }
+    .dish__name {
+      text-align: center;
+    }
+  }
+}
+
 .container__add--aditions--values {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background: white;
+  box-shadow: $card-shadow;
   border-radius: 5px;
   font-size: 14;
   margin-top: 10px;
@@ -78,5 +105,11 @@
   }
   .form__add-edit {
     width: 90%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .card__dish__cont {
+    width: 40%;
   }
 }

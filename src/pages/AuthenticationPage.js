@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Redirect, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { AuthContext } from '../context/Auth'
 import icono from '../assets/icon/acomerya-logo-name.svg'
 import TextField from '@material-ui/core/TextField'
@@ -70,7 +70,7 @@ function AuthenticationPage({ history }) {
     /* if (!currentUser) {
         return <Redirect to="/dishes" />
     } */
-    console.log(currentUser)
+
     return (
         <div className="container__main">
             <div className="login">

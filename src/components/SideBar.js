@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { BiDish, BiBook, BiCookie } from 'react-icons/bi'
 import profile from '../assets/icon/profile.svg'
 import { IconContext } from 'react-icons'
-import * as firebase from 'firebase'
 
-function sidebar() {
+function sidebar(props) {
+
+    const { data } = props
 
     const sideBar = [
         {
@@ -44,8 +45,10 @@ function sidebar() {
             <IconContext.Provider value={{ color: ' #85929e ' }}>
                 <nav className="sidebar">
                     <div className="sidebar__container--head">
-                        <img src={profile} className="sidebar__container--img" alt="imagen restaurante" />
-                        <h5 className="sidebar__container--name">Le Maison Du Festin</h5>
+                        <img src={data[1]} className="sidebar__container--img" alt="imagen restaurante" />
+                        <Link to="/profile">
+                            <h5 className="sidebar__container--name">{data[0]}</h5>
+                        </Link>
                     </div>
                     <div className="sidebar__container">
                         <ul className="sidebar__items">

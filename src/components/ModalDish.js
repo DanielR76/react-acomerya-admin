@@ -92,7 +92,7 @@ function ModalDish(props) {
                                 name="dishName"
                                 value={values.dishName}
                                 onChange={handleChange}
-                                required="true" />
+                                required={true} />
                             <TextField
                                 id="standard-textarea"
                                 label="Descripción"
@@ -100,21 +100,21 @@ function ModalDish(props) {
                                 value={values.description}
                                 multiline
                                 onChange={handleChange}
-                                required="true" />
+                                required={true} />
                             <TextField
                                 id="standard-basic"
                                 label="Ingredientes"
                                 name="ingredient"
                                 value={values.ingredient}
                                 onChange={handleChange}
-                                required="true" />
+                                required={true} />
                             <TextField
                                 id="standard-basic"
                                 label="Precio"
                                 name="price"
                                 value={values.price}
                                 onChange={handleChange}
-                                required="true" />
+                                required={true} />
                             <FormControlLabel
                                 control={<Switch
                                     checked={values.status}
