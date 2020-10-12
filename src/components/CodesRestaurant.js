@@ -36,6 +36,8 @@ function CodesRestaurant(props) {
         getCodes()
     }, [])
 
+
+    //Agregar un codigo
     const createCode = async (element) => {
         console.log(element)
         await db.collection('codesDocument').doc().set(element)
@@ -43,6 +45,7 @@ function CodesRestaurant(props) {
             .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
     }
 
+    //Eliminar codigo por id
     const deleteCode = async (id) => {
         console.log(id)
         await db.collection("codesDocument").doc(id).delete()
@@ -64,6 +67,7 @@ function CodesRestaurant(props) {
         setNewCode({ ...initialStateValues })
     }
 
+    //generar codigo aleatorio
     const generateCode = () => {
         const numberCode = Math.floor(Math.random() * (999999 - 100001))
         setNewCode({

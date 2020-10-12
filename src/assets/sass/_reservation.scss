@@ -1,0 +1,81 @@
+.container__reservation {
+  display: flex;
+  flex-direction: row;
+
+  .reservation__tittle {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .reservation__waiting {
+    width: 33%;
+  }
+
+  .reservation__accept {
+    width: 33%;
+    .card__reservation--header--accept {
+      color: aliceblue;
+      background-color: #28b463;
+      text-align: center;
+      border-radius: 10px;
+    }
+  }
+
+  .reservation__reject {
+    width: 33%;
+    .card__reservation--header--reject {
+      color: aliceblue;
+      background-color: #c0392b;
+      text-align: center;
+      border-radius: 10px;
+    }
+  }
+}
+
+.card__reservation {
+  background-color: white;
+  border-radius: 10px;
+  margin: 5% 15%;
+  padding: 8px;
+
+  .card__reservation--header {
+    color: aliceblue;
+    background-color: $color-orange-2;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  .card__reservation--body {
+    font-size: 14px;
+  }
+
+  .card__reservation--footer {
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .accept {
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    background: $button-color;
+    box-shadow: $card-shadow;
+    outline: none;
+    border: none;
+    color: aliceblue;
+    background: #28b463;
+  }
+
+  .reject {
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    background: $button-color;
+    box-shadow: $card-shadow;
+    outline: none;
+    border: none;
+    color: aliceblue;
+    background: #c0392b;
+  }
+}
