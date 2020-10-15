@@ -82,3 +82,19 @@
     border-radius: 20px;
   }
 }
+
+.button__logout {
+  color: $color-black-1;
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  margin-left: 70px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  &:hover {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1.1);
+  }
+}

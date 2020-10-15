@@ -10,10 +10,23 @@
 
   .reservation__waiting {
     width: 33%;
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .reservation__accept {
     width: 33%;
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     .card__reservation--header--accept {
       color: aliceblue;
       background-color: #28b463;
@@ -24,6 +37,13 @@
 
   .reservation__reject {
     width: 33%;
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     .card__reservation--header--reject {
       color: aliceblue;
       background-color: #c0392b;
@@ -35,6 +55,7 @@
 
 .card__reservation {
   background-color: white;
+  box-shadow: $card-shadow;
   border-radius: 10px;
   margin: 5% 15%;
   padding: 8px;

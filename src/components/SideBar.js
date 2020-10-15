@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { BiDish, BiBook, BiCookie } from 'react-icons/bi'
 import profile from '../assets/icon/profile.svg'
 import { IconContext } from 'react-icons'
+import * as firebase from 'firebase'
 
 function sidebar(props) {
 
@@ -55,14 +56,12 @@ function sidebar(props) {
                             {itemsSideBar}
                         </ul>
                     </div>
+                    <button
+                        className="button__logout"
+                        onClick={() => { firebase.auth().signOut() }}
+                    >Cerrar sesión</button>
                 </nav>
-                {/*                 <section className="section">
-                    <div className="section__container">
-
-                    </div>
-                </section> */}
             </IconContext.Provider>
-
         </div>
     )
 }

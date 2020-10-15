@@ -5,10 +5,27 @@
   flex-direction: row;
   .codes {
     width: 25%;
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .container__add--aditions {
+      width: 100%;
+      padding: 5px;
+    }
   }
   .cards {
     width: 75%;
     padding: 30px 0;
+    height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     .tittle__image {
       font-size: 20px;
       text-align: center;
@@ -46,6 +63,7 @@
 
 .codes {
   padding: 30px 15px;
+
   .code_contain {
     div {
       margin-top: 10px;

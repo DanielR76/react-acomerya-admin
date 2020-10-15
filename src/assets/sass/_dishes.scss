@@ -19,10 +19,22 @@
   .container__cards {
     width: 75%;
     margin: 20px;
+    height: 93vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .container__add {
     width: 25%;
     margin: 20px;
+    height: 93vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .container__add--aditions {
       width: 100%;
       padding: 5px;
@@ -47,6 +59,7 @@
       width: 30%;
       margin: 10px;
       border-radius: 10px;
+      background-color: white;
       box-shadow: $card-shadow;
       .dish__method {
         display: flex;
@@ -112,4 +125,10 @@
   .card__dish__cont {
     width: 40%;
   }
+}
+
+.container__add--aditions::-webkit-scrollbar-track {
+  background: #e1e1e1;
+
+  border-radius: 4px;
 }

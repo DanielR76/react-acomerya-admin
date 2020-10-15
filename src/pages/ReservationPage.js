@@ -77,6 +77,7 @@ function ReservationPage() {
     const handleReject = () => {
         editReservation({ status: "rejected" })
     }
+
     const requestPending = reservations.map((element, index) => {
         return (
             <div className="card__reservation">
@@ -90,7 +91,7 @@ function ReservationPage() {
                     </div>
                     <div>
                         <label>Fecha: </label>
-                        <label>{element.date}</label>
+                        <label>{element.date.toMillis().toString()}</label>
                     </div>
                     <div>
                         <label>Cantidad: </label>
@@ -117,12 +118,12 @@ function ReservationPage() {
                         }}>
                         Rechazar</button>
                 </div>
-                {/* {element.status} */}
             </div>
         )
     })
 
     const requestAccept = accepts.map(element => {
+        console.log(element.date)
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header--accept">
@@ -135,7 +136,7 @@ function ReservationPage() {
                     </div>
                     <div>
                         <label>Fecha: </label>
-                        <label>{element.date}</label>
+                        <label>{element.date.toMillis().toString()}</label>
                     </div>
                     <div>
                         <label>Cantidad: </label>
@@ -163,7 +164,7 @@ function ReservationPage() {
                     </div>
                     <div>
                         <label>Fecha: </label>
-                        <label>{element.date}</label>
+                        <label>{element.date.toMillis().toString()}</label>
                     </div>
                     <div>
                         <label>Cantidad: </label>

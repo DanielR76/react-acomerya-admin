@@ -1,0 +1,64 @@
+.container__orders {
+  display: flex;
+  flex-direction: column;
+}
+
+.orders {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+
+.container__orders--dishes {
+  height: 100%;
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+
+  width: 95%;
+  overflow-x: scroll;
+  /* scrollbar-width: none; */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .orders__table {
+    margin: 10px;
+  }
+
+  .request__dishes--cards {
+    height: 60%;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: $card-shadow;
+
+    .dishes__header {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h6 {
+        font-size: 20px;
+      }
+
+      img {
+        margin-top: 15px;
+        height: 120px;
+        /* width: 90%; */
+        border-radius: 10px;
+      }
+    }
+
+    .dishes__body {
+      width: 100%;
+      height: 150px;
+    }
+  }
+}
