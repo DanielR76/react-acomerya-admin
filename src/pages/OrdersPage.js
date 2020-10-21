@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import IconMoney from '../assets/icon/iconos-moneda-01.svg'
 import * as firebase from 'firebase'
 import { db } from '../utils/firebase'
 
@@ -41,7 +42,6 @@ function OrdersPage() {
             edditOrder({ status: "paid" })
             setRequestDish('')
         }
-
     }
 
     const dishesTable = requests.map((element, index) => {
@@ -77,14 +77,17 @@ function OrdersPage() {
                             <div className="dishes__body">
                                 <div>{e.description} </div>
                             </div>
-                            <div>{e.price}</div>
+                            <div className="dishes__footer">
+                                <img src={IconMoney} alt="icon" />
+                                <div>{e.price}</div>
+                            </div>
                         </div>
                     )
                 }))
         } else {
             return (
                 <div>
-                    No ha seleccionado algún plato
+                    No ha seleccionado ningún pedido
                 </div>
             )
         }
@@ -94,11 +97,11 @@ function OrdersPage() {
     return (
         <div className="container__orders">
             <div className="request">
-                <div className="orders">
+                <div className="request__orders">
                     {dishesTable}
                 </div>
                 <button
-                    className="paid"
+                    className="request__paid"
                     onClick={handlePaid}>
                     Pagado
                     </button>

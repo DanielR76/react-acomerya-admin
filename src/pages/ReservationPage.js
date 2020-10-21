@@ -9,7 +9,7 @@ function ReservationPage() {
     //Obtener lista de reservas pending
     const [reservations, setReservation] = useState([])
     const getReservations = async () => {
-        db.collection("reservationDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "pending")
+        db.collection("reservationDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "pendiente")
             .onSnapshot(querySnapshot => {
                 const state = []
                 querySnapshot.forEach((doc) => {
@@ -25,7 +25,7 @@ function ReservationPage() {
     //Obtener lista de reservas accept
     const [accepts, setAccepts] = useState([])
     const getAcceptsR = async () => {
-        db.collection("reservationDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "accepted")
+        db.collection("reservationDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "aceptado")
             .onSnapshot(querySnapshot => {
                 const state = []
                 querySnapshot.forEach((doc) => {
@@ -41,7 +41,7 @@ function ReservationPage() {
     //Obtener lista de reservas reject
     const [rejects, setRejects] = useState([])
     const getRejectsR = async () => {
-        db.collection("reservationDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "rejected")
+        db.collection("reservationDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "rechazado")
             .onSnapshot(querySnapshot => {
                 const state = []
                 querySnapshot.forEach((doc) => {
@@ -71,11 +71,11 @@ function ReservationPage() {
     }
 
     const handleAccept = () => {
-        editReservation({ status: "accepted" })
+        editReservation({ status: "aceptado" })
     }
 
     const handleReject = () => {
-        editReservation({ status: "rejected" })
+        editReservation({ status: "rechazado" })
     }
 
     const requestPending = reservations.map((element, index) => {

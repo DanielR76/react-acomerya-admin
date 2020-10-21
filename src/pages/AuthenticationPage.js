@@ -96,6 +96,7 @@ function AuthenticationPage({ history }) {
                     <button type="submit" className="login__form--submit">Continuar</button>
                 </form>
             </div>
+            <a className="link__freepik" href='https://www.freepik.es/'>Foto de Comida creado por freepik</a>
         </div>
     )
 }

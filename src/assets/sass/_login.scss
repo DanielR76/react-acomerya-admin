@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("../img/restaurant-2.jpg");
+  background-image: url("../img/restaurant_body_2.jpg");
   background-size: cover;
 }
 
@@ -92,4 +92,12 @@
   &:hover {
     box-shadow: $button-shadow;
   }
+}
+
+.link__freepik {
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }

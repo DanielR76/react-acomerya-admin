@@ -114,7 +114,7 @@ function ProfilePage() {
                     <button
                         className="login__form--submit"
                         onClick={handleSubmit}>
-                        Agregar
+                        Guardar
                 </button>
                 </div>
             </div>
