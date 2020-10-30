@@ -1,10 +1,51 @@
 .modaldish__container {
   display: flex;
   flex-direction: row;
-  .modaldish__container-input {
+
+  .modaldish__containder--left {
+    width: 50%;
     display: flex;
     flex-direction: column;
-    margin: 15px 15px;
+    align-items: center;
+    justify-content: center;
+
+    .modaldish__image {
+      height: 60%;
+      img {
+        width: 100%;
+        height: 210px;
+        border-radius: 10px;
+      }
+    }
+
+    .modaldish__price {
+      width: 130px;
+      display: flex;
+      flex-direction: row;
+      /* justify-content: space-between; */
+      align-items: center;
+      img {
+        height: 55px;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .modaldish__container-input {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px 50px;
+    height: 400px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .modal__ingredient {
+      display: flex;
+    }
   }
 }
 
@@ -68,7 +109,7 @@
     }
     img {
       width: 100%;
-      height: 110px;
+      height: 150px;
     }
     .dish__name {
       text-align: center;
@@ -89,6 +130,16 @@
     padding-left: 10px;
     display: flex;
     flex-direction: column;
+
+    .price {
+      display: flex;
+      flex-direction: row;
+
+      img {
+        height: 20px;
+        margin-right: 10px;
+      }
+    }
   }
   .container__delete__edit--dish {
     height: 60%;

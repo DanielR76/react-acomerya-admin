@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
+import IconMoney from '../assets/icon/iconos-moneda-01.svg'
 import * as firebase from 'firebase'
 import { db } from '../utils/firebase'
 
@@ -47,13 +48,13 @@ function AdditionalDish(props) {
     }
 
     //Crear o editar adiciones
-    const addOrEditDish = async (linkObject) => {
+    const addOrEditDish = async (object) => {
         if (currentId === '') {
-            await db.collection('additionalDocument').doc().set(linkObject)
+            await db.collection('additionalDocument').doc().set({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se cargó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
         } else {
-            await db.collection('additionalDocument').doc(currentId).update(linkObject)
+            await db.collection('additionalDocument').doc(currentId).update({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se actualizó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
             setCurrentId('')
@@ -94,7 +95,8 @@ function AdditionalDish(props) {
                             {val.name}
                         </label>
                     </div>
-                    <div>
+                    <div className="price">
+                        <img src={IconMoney} alt="icon" />
                         <label className="container__add--price" key={`price ${val}`}>
                             {val.price}
                         </label>

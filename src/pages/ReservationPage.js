@@ -79,25 +79,26 @@ function ReservationPage() {
     }
 
     const requestPending = reservations.map((element, index) => {
+        let datePending = new Date(element.date.toMillis())
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header">
                     <label>Solicitud # {element.requestNumber} </label>
                 </div>
                 <div className="card__reservation--body">
-                    <div>
+                    <div className="reservation__name">
                         <label>Nombre: </label>
                         <label>{element.name}</label>
                     </div>
-                    <div>
+                    <div className="reservation__date">
                         <label>Fecha: </label>
-                        <label>{element.date.toMillis().toString()}</label>
+                        <label>{`${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getMinutes()}:${datePending.getSeconds()}`}</label>
                     </div>
-                    <div>
+                    <div className="reservation__amount">
                         <label>Cantidad: </label>
                         <label>{element.quantity}</label>
                     </div>
-                    <div>
+                    <div className="reservation__description">
                         <label>Descripcion: </label>
                         <label>{element.summary}</label>
                     </div>
@@ -123,26 +124,26 @@ function ReservationPage() {
     })
 
     const requestAccept = accepts.map(element => {
-        console.log(element.date)
+        let dateAccept = new Date(element.date.toMillis())
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header--accept">
                     <label > Solicitud # {element.requestNumber} </label>
                 </div>
                 <div className="card__reservation--body">
-                    <div>
+                    <div className="reservation__name">
                         <label>Nombre: </label>
                         <label>{element.name}</label>
                     </div>
-                    <div>
+                    <div className="reservation__date">
                         <label>Fecha: </label>
-                        <label>{element.date.toMillis().toString()}</label>
+                        <label>{`${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getMinutes()}:${dateAccept.getSeconds()}`}</label>
                     </div>
-                    <div>
+                    <div className="reservation__amount">
                         <label>Cantidad: </label>
                         <label>{element.quantity}</label>
                     </div>
-                    <div>
+                    <div className="reservation__description">
                         <label>Descripcion: </label>
                         <label>{element.summary}</label>
                     </div>
@@ -152,25 +153,26 @@ function ReservationPage() {
     })
 
     const requestReject = rejects.map(element => {
+        let dateReject = new Date(element.date.toMillis())
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header--reject">
                     <label> Solicitud # {element.requestNumber} </label>
                 </div>
                 <div className="card__reservation--body">
-                    <div>
+                    <div className="reservation__name">
                         <label>Nombre: </label>
                         <label>{element.name}</label>
                     </div>
-                    <div>
+                    <div className="reservation__date">
                         <label>Fecha: </label>
-                        <label>{element.date.toMillis().toString()}</label>
+                        <label>{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getMinutes()}:${dateReject.getSeconds()}`}</label>
                     </div>
-                    <div>
+                    <div className="reservation__amount">
                         <label>Cantidad: </label>
                         <label>{element.quantity}</label>
                     </div>
-                    <div>
+                    <div className="reservation__description">
                         <label>Descripcion: </label>
                         <label>{element.summary}</label>
                     </div>

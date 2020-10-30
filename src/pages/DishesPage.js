@@ -41,14 +41,14 @@ function DishesPage() {
     const [currentDish, setCurrentDish] = useState('')
 
     //Crear o editar platos
-    const addOrEditDish = async (linkObject) => {
+    const addOrEditDish = async (object) => {
         if (currentDish === '') {
-            await db.collection('dishDocument').doc().set(linkObject)
+            await db.collection('dishDocument').doc().set({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se cargó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
         } else {
-            console.log(linkObject)
-            await db.collection('dishDocument').doc(currentDish).update(linkObject)
+            console.log(object)
+            await db.collection('dishDocument').doc(currentDish).update({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se actualizó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
             setCurrentDish('')

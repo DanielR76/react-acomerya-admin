@@ -65,7 +65,7 @@ function OrdersPage() {
     const dishesContain = () => {
         if (requestDish !== '') {
             let value = requestDish.dishes
-            console.log(value)
+            //console.log(value)
             return (
                 value.map((e) => {
                     return (
@@ -76,6 +76,18 @@ function OrdersPage() {
                             </div>
                             <div className="dishes__body">
                                 <div>{e.description} </div>
+                                <div>Ingredientes</div>
+                                {e.ingredient.map((ingre) => {
+                                    return (
+                                        <div>{ingre}</div>
+                                    )
+                                })}
+                                <div>Adiciones</div>
+                                {e.addition.map((addit) => {
+                                    return (
+                                        <div>{addit}</div>
+                                    )
+                                })}
                             </div>
                             <div className="dishes__footer">
                                 <img src={IconMoney} alt="icon" />
@@ -97,18 +109,22 @@ function OrdersPage() {
     return (
         <div className="container__orders">
             <div className="request">
-                <div className="request__orders">
-                    {dishesTable}
+                <div className="orders">
+                    <div className="request__orders">
+                        {dishesTable}
+                    </div>
                 </div>
                 <button
                     className="request__paid"
                     onClick={handlePaid}>
                     Pagado
-                    </button>
+                </button>
 
             </div>
             <div className="container__orders--dishes">
-                {dishesContain()}
+                <div className="request__dishes">
+                    {dishesContain()}
+                </div>
             </div>
         </div>
     )

@@ -2,20 +2,26 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Card } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch';
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
+import AddIcon from '@material-ui/icons/Add'
+import Switch from '@material-ui/core/Switch'
+import IconMoney from '../assets/icon/iconos-moneda-01.svg'
 import { db, storage } from '../utils/firebase'
 import * as firebase from 'firebase'
 
 function ModalDish(props) {
 
+    const [inputList, setInputList] = useState([])
+
     //Inicializar estado
     const initialStateValues = {
-        description: "",
-        dishName: "",
-        imagePath: null,
-        ingredient: "",
-        price: "",
         idRestaurant: firebase.auth().currentUser.uid,
+        imagePath: null,
+        dishName: "",
+        description: "",
+        ingredient: [""],
+        price: "",
         status: true
     }
 
@@ -25,11 +31,14 @@ function ModalDish(props) {
     const getDishById = async (id) => {
         const doc = await db.collection('dishDocument').doc(id).get()
         setValues({ ...doc.data() })
+        setInputList([...doc.data().ingredient])
     }
 
+    //Si hay id en el props mostrar datos
     useEffect(() => {
         if (props.idDish === '') {
             setValues({ ...initialStateValues })
+            setInputList(initialStateValues.ingredient)
         } else {
             getDishById(props.idDish)
         }
@@ -48,20 +57,95 @@ function ModalDish(props) {
 
     //Guardar los datos en values
     const handleChange = e => {
+        const { name, value, checked } = e.target
         setValues({
             ...values,
-            [e.target.name]: e.target.value,
-            status: e.target.checked
+            [name]: value,
+            status: checked
         })
     }
 
+    //Enviar datos 
     const handleSubmit = e => {
         console.log('se envia valor')
         e.preventDefault()
-        console.log(values)
-        props.addOrEdit(values)
-        setValues({ ...initialStateValues })
+
+        if (values.dishName !== null &&
+            values.description !== null &&
+            values.price !== null &&
+            values.imagePath !== null &&
+            values.ingredient !== []) {
+            console.log(values)
+            props.addOrEdit(values)
+            setValues({ ...initialStateValues })
+        }
     }
+
+    //Logica para ingredientes
+    const handleChangeIngre = (e, index) => {
+        const { name, value } = e.target
+        const list = [...inputList]
+        console.log(list)
+        list[index] = value
+        setInputList(list)
+        setValues({
+            ...values,
+            ingredient: list
+        })
+    };
+
+    const handleRemoveIngre = index => {
+        const list = [...inputList]
+        list.splice(index, 1)
+        setInputList(list)
+        setValues({
+            ...values,
+            ingredient: list
+        })
+    };
+
+    const handleAddIngre = () => {
+        setInputList([...inputList, ""])
+    };
+
+    const ingredients = inputList.map((x, i) => {
+        return (
+            <div className="modal__ingredient">
+                <TextField
+                    id="standard-basic"
+                    label="ingrediente"
+                    name="ingredient"
+                    value={x}
+                    onChange={e => handleChangeIngre(e, i)} />
+
+                <div className="modal__ingredient--buttons">
+                    {inputList.length !== 1 &&
+                        <div className="ingredient__buttons--delete">
+                            <IconButton
+                                aria-label="eliminar"
+                                onClick={() => handleRemoveIngre(i)}>
+                                <DeleteIcon
+                                    size="small"
+                                    color="secondary"
+                                />
+                            </IconButton>
+                        </div>
+                    }
+                    {inputList.length - 1 === i &&
+                        <div className="ingredient__buttons--add">
+                            <IconButton
+                                color="primary"
+                                aria-label="Añadir ingrediente"
+                                onClick={handleAddIngre}>
+                                <AddIcon />
+                            </IconButton>
+                        </div>
+                    }
+                </div>
+            </div>
+        )
+    })
+
 
 
     return (
@@ -70,6 +154,7 @@ function ModalDish(props) {
                 show={props.show}
                 onHide={props.close}
                 backdrop="static"
+                size="lg"
                 centered
                 dialogClassName="modal-90w">
 
@@ -79,12 +164,35 @@ function ModalDish(props) {
 
                 <Modal.Body >
                     <form className="modaldish__container" onSubmit={handleSubmit}  >
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Img src={values.imagePath}></Card.Img>
-                            <input
-                                type="file"
-                                onChange={handleLoad.bind(this)} />
-                        </Card>
+                        <div className="modaldish__containder--left">
+                            <div className="modaldish__image">
+                                <img className="" src={values.imagePath} alt="" />
+                                <input
+                                    type="file"
+                                    onChange={handleLoad.bind(this)} />
+                            </div>
+                            <div className="modaldish__price">
+                                <img src={IconMoney} alt="icon" />
+                                <TextField
+                                    id="standard-basic"
+                                    label="Precio"
+                                    name="price"
+                                    value={values.price}
+                                    onChange={handleChange}
+                                    required={true} />
+                            </div>
+                            <button
+                                className="login__form--submit"
+                                style={{ width: "200px" }}
+                                onClick={
+                                    values.dishName !== null &&
+                                        values.description !== null &&
+                                        values.price !== null &&
+                                        values.imagePath !== null ?
+                                        props.close : null}>
+                                {props.idDish === '' ? 'Crear' : 'Guardar'}
+                            </button>
+                        </div>
                         <div className="modaldish__container-input" >
                             <TextField
                                 id="standard-basic"
@@ -101,20 +209,8 @@ function ModalDish(props) {
                                 multiline
                                 onChange={handleChange}
                                 required={true} />
-                            <TextField
-                                id="standard-basic"
-                                label="Ingredientes"
-                                name="ingredient"
-                                value={values.ingredient}
-                                onChange={handleChange}
-                                required={true} />
-                            <TextField
-                                id="standard-basic"
-                                label="Precio"
-                                name="price"
-                                value={values.price}
-                                onChange={handleChange}
-                                required={true} />
+                            <div>{ingredients}</div>
+
                             <FormControlLabel
                                 control={<Switch
                                     checked={values.status}
@@ -122,11 +218,6 @@ function ModalDish(props) {
                                     name="status" />}
                             />
 
-                            <button
-                                className="login__form--submit"
-                                onClick={props.close}>
-                                {props.idDish === '' ? 'Crear' : 'Guardar'}
-                            </button>
                         </div>
                     </form>
                 </Modal.Body>

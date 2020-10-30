@@ -2,15 +2,24 @@
   display: flex;
   flex-direction: column;
 
-  .request__orders {
-    height: 100%;
-    width: 85%;
-    background-color: white;
-    display: flex;
-    flex-direction: row;
-    margin: 5px;
-  }
+  .orders {
+    margin: 20px;
+    width: 1000px;
+    position: relative;
+    overflow-x: scroll;
 
+    .request__orders {
+      height: 100%;
+      width: 85%;
+      background-color: white;
+      display: flex;
+      flex-direction: row;
+      margin: 5px;
+      .orders__table {
+        margin: 10px;
+      }
+    }
+  }
   .request__paid {
     float: right;
   }
@@ -18,68 +27,69 @@
 
 .container__orders--dishes {
   height: 500px;
-  width: 95%;
+  width: 1000px;
   margin: 20px;
-  display: flex;
-  flex-direction: row;
+  position: relative;
+  /* display: flex;
+  flex-direction: row;*/
   overflow-x: scroll;
   /* scrollbar-width: none; */
   &::-webkit-scrollbar {
     display: none;
   }
 
-  .orders__table {
-    margin: 10px;
-  }
+  .request__dishes {
+    white-space: nowrap;
 
-  .request__dishes--cards {
-    height: 98%;
-    width: 280px;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: $card-shadow;
+    .request__dishes--cards {
+      height: 450px;
+      width: 280px;
+      margin: 10px;
+      display: inline-block;
+      /* flex-direction: column;
+      align-items: center; */
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: $card-shadow;
 
-    .dishes__header {
-      height: 35%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      .dishes__header {
+        height: 35%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-      h6 {
-        font-size: 20px;
-        margin: auto;
+        h6 {
+          font-size: 20px;
+          margin: auto;
+        }
+
+        img {
+          margin-top: 15px;
+          height: 75%;
+          width: 85%;
+          border-radius: 10px;
+        }
       }
 
-      img {
-        margin-top: 15px;
-        height: 75%;
-        width: 85%;
-        border-radius: 10px;
+      .dishes__body {
+        width: 100%;
+        height: 55%;
+        padding: 15px;
       }
-    }
 
-    .dishes__body {
-      width: 100%;
-      height: 55%;
-      padding: 15px;
-    }
+      .dishes__footer {
+        width: 100%;
+        height: 10%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
 
-    .dishes__footer {
-      width: 100%;
-      height: 10%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-
-      img {
-        height: 50%;
-        margin: 0 5px;
+        img {
+          height: 50px;
+          margin: 0 5px;
+        }
       }
     }
   }
