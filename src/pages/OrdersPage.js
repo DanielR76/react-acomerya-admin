@@ -76,16 +76,16 @@ function OrdersPage() {
                             </div>
                             <div className="dishes__body">
                                 <div>{e.description} </div>
-                                <div>Ingredientes</div>
+                                <div className="dishes__body--ingredient">Ingredientes</div>
                                 {e.ingredient.map((ingre) => {
                                     return (
-                                        <div>{ingre}</div>
+                                        <div className="ingredient">{ingre}</div>
                                     )
                                 })}
-                                <div>Adiciones</div>
+                                <div className="dishes__body--addition">Adiciones</div>
                                 {e.addition.map((addit) => {
                                     return (
-                                        <div>{addit}</div>
+                                        <div className="addition">{addit}</div>
                                     )
                                 })}
                             </div>
@@ -114,11 +114,12 @@ function OrdersPage() {
                         {dishesTable}
                     </div>
                 </div>
-                <button
-                    className="request__paid"
-                    onClick={handlePaid}>
-                    Pagado
+                <div className="request__paid">
+                    <button
+                        onClick={handlePaid}>
+                        Pagado
                 </button>
+                </div>
 
             </div>
             <div className="container__orders--dishes">
