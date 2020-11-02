@@ -6,9 +6,11 @@ import { db } from '../utils/firebase'
 
 function OrdersPage() {
 
-    //Obtener lista de reservas pending
     const [requests, setRequests] = useState([])
     const [requestDish, setRequestDish] = useState('')
+    const [totalPrice, setTotalPrice] = useState('')
+
+    //Obtener lista de reservas pending
     const getRequest = async () => {
         db.collection("requestsDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "active")
             .onSnapshot(querySnapshot => {
@@ -54,6 +56,7 @@ function OrdersPage() {
                     onClick={() => {
                         setRequestDish(element)
                         setCurrentOrder(element.id)
+                        setTotalPrice(element.totalPrice)
                     }}
                 >
                     {element.table}
@@ -65,7 +68,6 @@ function OrdersPage() {
     const dishesContain = () => {
         if (requestDish !== '') {
             let value = requestDish.dishes
-            //console.log(value)
             return (
                 value.map((e) => {
                     return (
@@ -76,22 +78,33 @@ function OrdersPage() {
                             </div>
                             <div className="dishes__body">
                                 <div>{e.description} </div>
-                                <div className="dishes__body--ingredient">Ingredientes</div>
-                                {e.ingredient.map((ingre) => {
-                                    return (
-                                        <div className="ingredient">{ingre}</div>
-                                    )
-                                })}
-                                <div className="dishes__body--addition">Adiciones</div>
-                                {e.addition.map((addit) => {
-                                    return (
-                                        <div className="addition">{addit}</div>
-                                    )
-                                })}
+                                <div className="dishes__body--ingredient">
+                                    Ingredientes
+                                    <div className="ingredient">
+                                        {e.ingredient.map((ingre) => {
+                                            return (
+                                                <div >{ingre}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                                <div className="dishes__body--addition">
+                                    Adiciones
+                                    <div className="addition">
+                                        {e.addition.map((addit) => {
+                                            return (
+                                                <div >{addit}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
                             </div>
                             <div className="dishes__footer">
-                                <img src={IconMoney} alt="icon" />
-                                <div>{e.price}</div>
+                                <div className="footer__amount">Cantidad: {e.quantity}</div>
+                                <div className="footer__price">
+                                    <img src={IconMoney} alt="icon" />
+                                    <div>{e.priceAddition}</div>
+                                </div>
                             </div>
                         </div>
                     )
@@ -115,6 +128,12 @@ function OrdersPage() {
                     </div>
                 </div>
                 <div className="request__paid">
+                    <div className="request__paid--money">
+                        <img src={IconMoney} alt="icon" />
+                        <div>
+                            {totalPrice}
+                        </div>
+                    </div>
                     <button
                         onClick={handlePaid}>
                         Pagado

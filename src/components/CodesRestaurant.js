@@ -14,7 +14,6 @@ function CodesRestaurant(props) {
     }
 
     const [newCode, setNewCode] = useState(initialStateValues)
-    const [show, setShow] = useState(false)
 
     //Obtener codigos
     const [codes, setCodes] = useState([])

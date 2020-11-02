@@ -92,7 +92,7 @@ function ReservationPage() {
                     </div>
                     <div className="reservation__date">
                         <label>Fecha: </label>
-                        <label>{`${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getMinutes()}:${datePending.getSeconds()}`}</label>
+                        <label>{`${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getHours()}:${datePending.getMinutes()}`}</label>
                     </div>
                     <div className="reservation__amount">
                         <label>Cantidad: </label>
@@ -137,7 +137,7 @@ function ReservationPage() {
                     </div>
                     <div className="reservation__date">
                         <label>Fecha: </label>
-                        <label>{`${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getMinutes()}:${dateAccept.getSeconds()}`}</label>
+                        <label>{`${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getHours()}:${dateAccept.getMinutes()}`}</label>
                     </div>
                     <div className="reservation__amount">
                         <label>Cantidad: </label>
@@ -166,7 +166,7 @@ function ReservationPage() {
                     </div>
                     <div className="reservation__date">
                         <label>Fecha: </label>
-                        <label>{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getMinutes()}:${dateReject.getSeconds()}`}</label>
+                        <label>{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getHours()}:${dateReject.getMinutes()}`}</label>
                     </div>
                     <div className="reservation__amount">
                         <label>Cantidad: </label>
