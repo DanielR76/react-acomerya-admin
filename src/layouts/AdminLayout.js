@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import SideBar from '../components/SideBar'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function AdminLayout(props) {

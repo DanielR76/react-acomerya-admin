@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { Card } from 'react-bootstrap'
 import ModalDish from '../components/ModalDish'
 import AdditionalDish from '../components/AdditionalDish'
 import EditIcon from '@material-ui/icons/Edit'
 import AddIcon from '@material-ui/icons/Add'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import * as firebase from 'firebase'
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import { Modal, ModalBody } from 'react-bootstrap'
+import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function DishesPage() {
+
+    const [showDelete, setShowDelete] = useState(false);
+
+    const handleCloseDelete = () => setShowDelete(false);
+    const handleShowDelete = () => setShowDelete(true);
 
     //Mostrar u ocultar modal
     const [show, setShow] = useState(false)
@@ -62,6 +69,31 @@ function DishesPage() {
             .catch(error => { console.error("Error eliminando el plato: ", error) })
     }
 
+    const modalConfirm = (element) => {
+        return (
+            <div>
+                <Modal
+                    show={showDelete}
+                    onHide={handleCloseDelete}
+                    backdrop="static"
+                    centered
+                >
+                    <Modal.Body>
+                        ¿Está seguro que desea eliminar el plato?
+                        <button
+                            onClick={handleCloseDelete}>
+                            Cancelar
+                        </button>
+                        <button
+                            onClick={handleCloseDelete}>
+                            Confirmar
+                        </button>
+                    </Modal.Body>
+                </Modal>
+            </div>
+        )
+    }
+
     //estructura de cards de platos
     const DishesCard = dish.map((todo, i) => {
         return (
@@ -91,7 +123,7 @@ function DishesPage() {
                         <IconButton
                             key={`4${todo.id}`}
                             aria-label="eliminar"
-                            onClick={() => { deleteDish(todo.id) }}>
+                            onClick={handleShowDelete /* () => { modalConfirm(todo.id) } */}>
                             <DeleteIcon
                                 size="small"
                                 color="secondary"
@@ -127,6 +159,7 @@ function DishesPage() {
                     {...({
                         addOrEdit: addOrEditDish, idDish: currentDish
                     })} />
+                {modalConfirm()}
             </div>
             <div className="container__add">
                 <h6 className='tittle__header'>Adiciones</h6>

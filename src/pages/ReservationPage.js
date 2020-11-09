@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function ReservationPage() {
@@ -83,7 +83,7 @@ function ReservationPage() {
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header">
-                    <label>Solicitud # {element.requestNumber} </label>
+                    <label>{element.requestNumber} </label>
                 </div>
                 <div className="card__reservation--body">
                     <div className="reservation__name">
@@ -128,7 +128,7 @@ function ReservationPage() {
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header--accept">
-                    <label > Solicitud # {element.requestNumber} </label>
+                    <label >{element.requestNumber} </label>
                 </div>
                 <div className="card__reservation--body">
                     <div className="reservation__name">
@@ -157,7 +157,7 @@ function ReservationPage() {
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header--reject">
-                    <label> Solicitud # {element.requestNumber} </label>
+                    <label> {element.requestNumber} </label>
                 </div>
                 <div className="card__reservation--body">
                     <div className="reservation__name">

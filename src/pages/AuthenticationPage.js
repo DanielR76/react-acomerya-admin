@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { AuthContext } from '../context/Auth'
 import icono from '../assets/icon/acomerya-logo-name.svg'
 import TextField from '@material-ui/core/TextField'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function AuthenticationPage({ history }) {

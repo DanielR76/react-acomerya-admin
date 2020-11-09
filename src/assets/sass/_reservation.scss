@@ -29,7 +29,7 @@
 
     .card__reservation--header--accept {
       color: aliceblue;
-      background-color: #28b463;
+      background-color: $color-green-1;
       text-align: center;
       border-radius: 10px;
     }
@@ -46,7 +46,7 @@
 
     .card__reservation--header--reject {
       color: aliceblue;
-      background-color: #c0392b;
+      background-color: $color-red-1;
       text-align: center;
       border-radius: 10px;
     }
@@ -62,7 +62,7 @@
 
   .card__reservation--header {
     color: aliceblue;
-    background-color: $color-orange-2;
+    background-color: $color-orange-3;
     text-align: center;
     border-radius: 10px;
   }
@@ -91,7 +91,7 @@
     outline: none;
     border: none;
     color: aliceblue;
-    background: #28b463;
+    background: $color-green-1;
   }
 
   .reject {
@@ -103,6 +103,6 @@
     outline: none;
     border: none;
     color: aliceblue;
-    background: #c0392b;
+    background: $color-red-1;
   }
 }

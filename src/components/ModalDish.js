@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Card } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
@@ -7,8 +7,10 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import Switch from '@material-ui/core/Switch'
 import IconMoney from '../assets/icon/iconos-moneda-01.svg'
+import { UploadButtons } from '../components/MaterialUI'
+import ImageLoad from '../assets/img/upload_image.png'
 import { db, storage } from '../utils/firebase'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 
 function ModalDish(props) {
 
@@ -57,10 +59,18 @@ function ModalDish(props) {
 
     //Guardar los datos en values
     const handleChange = e => {
-        const { name, value, checked } = e.target
+        const { name, value } = e.target
         setValues({
             ...values,
-            [name]: value,
+            [name]: value
+        })
+    }
+
+    //Guardar los datos en values
+    const handleChangeCheck = e => {
+        const { checked } = e.target
+        setValues({
+            ...values,
             status: checked
         })
     }
@@ -146,8 +156,6 @@ function ModalDish(props) {
         )
     })
 
-
-
     return (
         <div className="modaldish" >
             <Modal
@@ -166,10 +174,14 @@ function ModalDish(props) {
                     <form className="modaldish__container" onSubmit={handleSubmit}  >
                         <div className="modaldish__containder--left">
                             <div className="modaldish__image">
-                                <img className="" src={values.imagePath} alt="" />
-                                <input
+                                {values.imagePath !== null ?
+                                    <img className="image__dish" src={values.imagePath} alt="imagen 2" /> :
+                                    <img className="image__dish" src={ImageLoad} alt="imagen 1" />
+                                }
+                                {/* <input
                                     type="file"
-                                    onChange={handleLoad.bind(this)} />
+                                    onChange={handleLoad.bind(this)} /> */}
+                                <UploadButtons changeImg={handleLoad.bind(this)} />
                             </div>
                             <div className="modaldish__price">
                                 <img src={IconMoney} alt="icon" />
@@ -214,17 +226,16 @@ function ModalDish(props) {
                             <FormControlLabel
                                 control={<Switch
                                     checked={values.status}
-                                    onChange={handleChange}
+                                    onChange={handleChangeCheck}
+                                    color="primary"
                                     name="status" />}
                             />
-
                         </div>
                     </form>
                 </Modal.Body>
             </Modal>
         </div >
     )
-
 }
 
 export default ModalDish

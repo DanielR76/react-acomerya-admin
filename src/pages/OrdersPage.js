@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import IconMoney from '../assets/icon/iconos-moneda-01.svg'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 
@@ -41,7 +41,7 @@ function OrdersPage() {
 
     const handlePaid = () => {
         if (currentOrder) {
-            edditOrder({ status: "paid" })
+            edditOrder({ status: "pagado" })
             setRequestDish('')
         }
     }

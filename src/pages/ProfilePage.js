@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { UploadButtons } from '../components/MaterialUI'
+
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CodesRestaurant from '../components/CodesRestaurant'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { db, storage } from '../utils/firebase'
+
 
 function ProfilePage() {
 
@@ -107,9 +110,14 @@ function ProfilePage() {
                 <div className="image__card">
                     {dataImage}
                 </div>
-                <input
+                {/* <input
+                    className="upload__image"
                     type="file"
-                    onChange={handleLoad.bind(this)} />
+                    accept="image/*"
+                    onChange={handleLoad.bind(this)} /> */}
+
+                <UploadButtons changeImg={handleLoad.bind(this)} />
+
                 <div className="save__image">
                     <button
                         className="login__form--submit"

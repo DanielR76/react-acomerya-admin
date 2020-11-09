@@ -25,7 +25,7 @@
       /* justify-content: space-between; */
       align-items: center;
       img {
-        height: 55px;
+        height: 30px;
         margin-right: 10px;
       }
     }
@@ -102,6 +102,10 @@
       border-radius: 10px;
       background-color: white;
       box-shadow: $card-shadow;
+
+      img {
+        border-radius: 5px;
+      }
       .dish__method {
         display: flex;
         justify-content: space-between;

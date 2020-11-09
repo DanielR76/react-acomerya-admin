@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function CodesRestaurant(props) {
