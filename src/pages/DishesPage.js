@@ -4,19 +4,17 @@ import AdditionalDish from '../components/AdditionalDish'
 import EditIcon from '@material-ui/icons/Edit'
 import AddIcon from '@material-ui/icons/Add'
 import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'
-import { Modal, ModalBody } from 'react-bootstrap'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import DeleteModal from '../components/DeleteModal'
 import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function DishesPage() {
 
-    const [showDelete, setShowDelete] = useState(false);
-
-    const handleCloseDelete = () => setShowDelete(false);
-    const handleShowDelete = () => setShowDelete(true);
+    const [showAlert, setShowAlert] = useState(false)
+    const handleOpenAlert = () => setShowAlert(true)
+    const handleCloseAlert = (action) => setShowAlert(action)
+    const [currentDish, setCurrentDish] = useState('')
 
     //Mostrar u ocultar modal
     const [show, setShow] = useState(false)
@@ -45,8 +43,6 @@ function DishesPage() {
         getDishes()
     }, [])
 
-    const [currentDish, setCurrentDish] = useState('')
-
     //Crear o editar platos
     const addOrEditDish = async (object) => {
         if (currentDish === '') {
@@ -54,7 +50,6 @@ function DishesPage() {
                 .then(() => console.log("Se cargó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
         } else {
-            console.log(object)
             await db.collection('dishDocument').doc(currentDish).update({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se actualizó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
@@ -63,35 +58,12 @@ function DishesPage() {
     }
 
     //eliminar platos
-    const deleteDish = async (id) => {
-        await db.collection("dishDocument").doc(id).delete()
+    const deleteDish = async () => {
+        setShowAlert(false)
+        await db.collection("dishDocument").doc(currentDish).delete()
             .then(() => { console.log("Document eliminado correctamente!") })
             .catch(error => { console.error("Error eliminando el plato: ", error) })
-    }
-
-    const modalConfirm = (element) => {
-        return (
-            <div>
-                <Modal
-                    show={showDelete}
-                    onHide={handleCloseDelete}
-                    backdrop="static"
-                    centered
-                >
-                    <Modal.Body>
-                        ¿Está seguro que desea eliminar el plato?
-                        <button
-                            onClick={handleCloseDelete}>
-                            Cancelar
-                        </button>
-                        <button
-                            onClick={handleCloseDelete}>
-                            Confirmar
-                        </button>
-                    </Modal.Body>
-                </Modal>
-            </div>
-        )
+        setCurrentDish('')
     }
 
     //estructura de cards de platos
@@ -123,8 +95,11 @@ function DishesPage() {
                         <IconButton
                             key={`4${todo.id}`}
                             aria-label="eliminar"
-                            onClick={handleShowDelete /* () => { modalConfirm(todo.id) } */}>
-                            <DeleteIcon
+                            onClick={() => {
+                                setCurrentDish(todo.id)
+                                handleOpenAlert()
+                            } /* () => { modalConfirm(todo.id) } */}>
+                            <HighlightOffIcon
                                 size="small"
                                 color="secondary"
                             />
@@ -159,7 +134,7 @@ function DishesPage() {
                     {...({
                         addOrEdit: addOrEditDish, idDish: currentDish
                     })} />
-                {modalConfirm()}
+                <DeleteModal name={'eliminar el plato del menú'} open={showAlert} close={handleCloseAlert} delete={deleteDish} />
             </div>
             <div className="container__add">
                 <h6 className='tittle__header'>Adiciones</h6>

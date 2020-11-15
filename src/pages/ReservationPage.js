@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import DeleteModal from '../components/DeleteModal'
 import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function ReservationPage() {
 
-    var reserv
+    const [showAlert, setShowAlert] = useState(false)
+    const handleOpenAlert = () => setShowAlert(true)
+    const handleCloseAlert = (action) => setShowAlert(action)
+    const [currentId, setCurrentId] = useState('')
+    const [selectStatus, setSelectStatus] = useState('')
+    //var reserv
 
     //Obtener lista de reservas pending
     const [reservations, setReservation] = useState([])
@@ -61,24 +67,31 @@ function ReservationPage() {
     }, [])
 
 
-    //Cambiar estado a una reserva
+    //Cambiar estado de una reserva en BD
     const editReservation = async (object) => {
-        console.log(object)
-        await db.collection('reservationDocument').doc(reserv).update(object)
+        await db.collection('reservationDocument').doc(currentId).update(object)
             .then(() => console.log("Se actualizó correctamente al documento"))
             .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
-
     }
 
-    const handleAccept = () => {
-        editReservation({ status: "aceptado" })
+    //Cambiar estado de reserva seleccionada
+    const handleStatus = () => {
+        setShowAlert(false)
+        switch (selectStatus) {
+            case 'accept':
+                editReservation({ status: "aceptado" })
+                break;
+            case 'reject':
+                editReservation({ status: "rechazado" })
+                break;
+            default:
+                break;
+        }
+        setSelectStatus('')
+        setCurrentId('')
     }
 
-    const handleReject = () => {
-        editReservation({ status: "rechazado" })
-    }
-
-    const requestPending = reservations.map((element, index) => {
+    const requestPending = reservations.map((element) => {
         let datePending = new Date(element.date.toMillis())
         return (
             <div className="card__reservation">
@@ -107,15 +120,21 @@ function ReservationPage() {
                     <button
                         className="accept"
                         onClick={() => {
-                            reserv = element.id
-                            handleAccept()
+                            //reserv = element.id
+                            setCurrentId(element.id)
+                            handleOpenAlert()
+                            setSelectStatus('accept')
+                            /* handleAccept() */
                         }}>
                         Aceptar</button>
                     <button
                         className="reject"
                         onClick={() => {
-                            reserv = element.id
-                            handleReject()
+                            /* reserv = element.id */
+                            setCurrentId(element.id)
+                            handleOpenAlert()
+                            setSelectStatus('reject')
+                            /* handleReject() */
                         }}>
                         Rechazar</button>
                 </div>
@@ -195,6 +214,11 @@ function ReservationPage() {
                 <h6 className="reservation__tittle">Rechazadas</h6>
                 {requestReject}
             </div>
+            <DeleteModal
+                name={selectStatus === 'accept' ? 'aceptar la reserva ' : 'rechazar la reserva'}
+                open={showAlert}
+                close={handleCloseAlert}
+                delete={handleStatus} />
         </div>
     )
 }

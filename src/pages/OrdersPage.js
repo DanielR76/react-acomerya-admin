@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import DeleteModal from '../components/DeleteModal'
 import IconMoney from '../assets/icon/iconos-moneda-01.svg'
 import firebase from 'firebase'
 import { db } from '../utils/firebase'
@@ -6,11 +7,15 @@ import { db } from '../utils/firebase'
 
 function OrdersPage() {
 
+    const [showAlert, setShowAlert] = useState(false)
+    const handleOpenAlert = () => setShowAlert(true)
+    const handleCloseAlert = (action) => setShowAlert(action)
     const [requests, setRequests] = useState([])
     const [requestDish, setRequestDish] = useState('')
     const [totalPrice, setTotalPrice] = useState('')
+    const [currentOrder, setCurrentOrder] = useState('')
 
-    //Obtener lista de reservas pending
+    //Obtener lista de reservas pendientes
     const getRequest = async () => {
         db.collection("requestsDocument").where("idRestaurant", "==", firebase.auth().currentUser.uid).where("status", "==", "active")
             .onSnapshot(querySnapshot => {
@@ -29,9 +34,7 @@ function OrdersPage() {
         getRequest()
     }, [])
 
-    const [currentOrder, setCurrentOrder] = useState('')
-
-    //Editar orden
+    //Editar ordenen la BD
     const edditOrder = async (object) => {
         console.log(object)
         await db.collection('requestsDocument').doc(currentOrder).update(object)
@@ -39,11 +42,15 @@ function OrdersPage() {
             .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
     }
 
+    //Cambiar estado a pagado
     const handlePaid = () => {
+        setShowAlert(false)
+        console.log(currentOrder)
         if (currentOrder) {
             edditOrder({ status: "pagado" })
             setRequestDish('')
         }
+        setCurrentOrder('')
     }
 
     const dishesTable = requests.map((element, index) => {
@@ -127,7 +134,7 @@ function OrdersPage() {
                         {dishesTable}
                     </div>
                 </div>
-                <div className="request__paid">
+                {currentOrder ? <div className="request__paid">
                     <div className="request__paid--money">
                         <img src={IconMoney} alt="icon" />
                         <div>
@@ -135,17 +142,19 @@ function OrdersPage() {
                         </div>
                     </div>
                     <button
-                        onClick={handlePaid}>
+                        onClick={() => {
+                            handleOpenAlert()
+                        }}>
                         Pagado
-                </button>
-                </div>
-
+                    </button>
+                </div> : null}
             </div>
             <div className="container__orders--dishes">
                 <div className="request__dishes">
                     {dishesContain()}
                 </div>
             </div>
+            <DeleteModal name={'marcar el pedido como pagado'} open={currentOrder ? showAlert : null} close={handleCloseAlert} delete={handlePaid} />
         </div>
     )
 

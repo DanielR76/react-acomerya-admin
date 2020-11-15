@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import DeleteModal from './DeleteModal'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
-import DeleteIcon from '@material-ui/icons/Delete'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function CodesRestaurant(props) {
+
+    const [show, setShow] = useState(false)
+    const handleOpen = () => setShow(true)
+    const handleClose = (action) => setShow(action)
+    const [currentId, setCurrentId] = useState('')
 
     const initialStateValues = {
         idRestaurant: firebase.auth().currentUser.uid,
@@ -38,20 +44,21 @@ function CodesRestaurant(props) {
 
     //Agregar un codigo
     const createCode = async (element) => {
-        console.log(element)
         await db.collection('codesDocument').doc().set(element)
             .then(() => console.log("Se cargó correctamente al documento"))
             .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
     }
 
     //Eliminar codigo por id
-    const deleteCode = async (id) => {
-        console.log(id)
-        await db.collection("codesDocument").doc(id).delete()
+    const deleteCode = async () => {
+        setShow(false)
+        await db.collection("codesDocument").doc(currentId).delete()
             .then(() => { console.log("Document eliminado correctamente!") })
             .catch(error => { console.error("Error eliminando el codigo: ", error) })
+        setCurrentId('')
     }
 
+    //Digitar texto
     const handleChange = (e) => {
         const { name, value } = e.target
         setNewCode({
@@ -60,6 +67,7 @@ function CodesRestaurant(props) {
         })
     }
 
+    //Crear código
     const handleSubmit = (e) => {
         e.preventDefault()
         createCode(newCode)
@@ -68,7 +76,7 @@ function CodesRestaurant(props) {
 
     //generar codigo aleatorio
     const generateCode = () => {
-        const numberCode = Math.floor(Math.random() * (999999 - 100001))
+        const numberCode = Math.floor(Math.random() * 999999)
         setNewCode({
             ...newCode,
             code: numberCode
@@ -82,8 +90,11 @@ function CodesRestaurant(props) {
                 <label >{element.code}</label>
                 <IconButton
                     aria-label="eliminar"
-                    onClick={() => deleteCode(element.id)}>
-                    <DeleteIcon
+                    onClick={() => {
+                        handleOpen()
+                        setCurrentId(element.id)
+                    }}>
+                    <HighlightOffIcon
                         size="small"
                         color="secondary"
                     />
@@ -116,7 +127,7 @@ function CodesRestaurant(props) {
                     newCode.code !== '' ?
                         <button
                             className="login__form--submit"
-                            onClick={handleSubmit}>
+                            onClick={newCode.table !== '' ? handleSubmit : null}>
                             Guardar
                     </button>
                         :
@@ -127,6 +138,7 @@ function CodesRestaurant(props) {
                 </button>
                 }
             </div>
+            <DeleteModal name={'eliminar el código y la mesa'} open={show} close={handleClose} delete={deleteCode} />
         </>
     )
 }

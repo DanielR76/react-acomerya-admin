@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react'
+import DeleteModal from '../components/DeleteModal'
 import TextField from '@material-ui/core/TextField'
 import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import EditIcon from '@material-ui/icons/Edit'
 import IconMoney from '../assets/icon/iconos-moneda-01.svg'
 import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
-function AdditionalDish(props) {
+function AdditionalDish() {
+
+    const [showAlert, setShowAlert] = useState(false)
+    const handleOpenAlert = () => setShowAlert(true)
+    const handleCloseAlert = (action) => setShowAlert(action)
+    const [currentId, setCurrentId] = useState('')
+    const [currentIdForm, setCurrentIdForm] = useState('')
+    const [formAddition, setFormAddition] = useState(false)
 
     const initialStateValues = {
         idRestaurant: firebase.auth().currentUser.uid,
         name: "",
         price: ""
     }
-
-    const [formAddition, setFormAddition] = useState(false)
 
     const [additionalValue, setAdditionalValue] = useState(initialStateValues)
 
@@ -38,8 +44,6 @@ function AdditionalDish(props) {
         getAdditional()
     }, [])
 
-    const [currentId, setCurrentId] = useState('')
-
     //Obtener adicion por el id
     const getAdditionById = async (id) => {
         const doc = await db.collection('additionalDocument').doc(id).get()
@@ -49,24 +53,25 @@ function AdditionalDish(props) {
 
     //Crear o editar adiciones
     const addOrEditDish = async (object) => {
-        if (currentId === '') {
+        if (currentIdForm === '') {
             await db.collection('additionalDocument').doc().set({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se cargó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al cargar en FireStore: ", error))
         } else {
-            await db.collection('additionalDocument').doc(currentId).update({ ...object, price: Number(object.price) })
+            await db.collection('additionalDocument').doc(currentIdForm).update({ ...object, price: Number(object.price) })
                 .then(() => console.log("Se actualizó correctamente al documento"))
                 .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
-            setCurrentId('')
+            setCurrentIdForm('')
         }
     }
 
     //eliminar adiciones
-    const deleteAddition = async (id) => {
-        console.log(id)
-        await db.collection("additionalDocument").doc(id).delete()
+    const deleteAddition = async () => {
+        setShowAlert(false)
+        await db.collection("additionalDocument").doc(currentId).delete()
             .then(() => { console.log("Document eliminado correctamente!") })
             .catch(error => { console.error("Error eliminando el plato: ", error) })
+        setCurrentId('')
     }
 
     //Guardar los datos en values
@@ -77,6 +82,7 @@ function AdditionalDish(props) {
         })
     }
 
+    //Crear o editar adicion
     const handleSubmit = e => {
         console.log(`se envia valor `)
         e.preventDefault()
@@ -107,8 +113,8 @@ function AdditionalDish(props) {
                         key={`edit ${val}`}
                         aria-label="editar"
                         onClick={() => {
+                            setCurrentIdForm(val.id)
                             getAdditionById(val.id)
-                            setCurrentId(val.id)
                         }}>
                         <EditIcon
                             size="small"
@@ -118,14 +124,16 @@ function AdditionalDish(props) {
                     <IconButton
                         key={`delete ${val}`}
                         aria-label="eliminar"
-                        onClick={() => deleteAddition(val.id)}>
-                        <DeleteIcon
+                        onClick={() => {
+                            setCurrentId(val.id)
+                            handleOpenAlert()
+                        }}>
+                        <HighlightOffIcon
                             size="small"
                             color="secondary"
                         />
                     </IconButton>
                 </div>
-
             </div>
         )
     })
@@ -133,7 +141,7 @@ function AdditionalDish(props) {
     return (
         <div className="container__form" key="1">
             {aditionalsCard}
-            {currentId || formAddition ?
+            {currentIdForm || formAddition ?
                 <form
                     className="form"
                     onSubmit={additionalValue.price !== '' && additionalValue.name !== '' ? handleSubmit : null}>
@@ -162,7 +170,7 @@ function AdditionalDish(props) {
                     <button
                         className="login__form--submit"
                         type="submit">
-                        {currentId ? 'Guardar' : 'Agregar'}
+                        {currentIdForm ? 'Guardar' : 'Agregar'}
                     </button>
                 </form>
                 :
@@ -171,8 +179,8 @@ function AdditionalDish(props) {
                     onClick={() => setFormAddition(true)}>
                     Adicionar
                 </button>
-
             }
+            <DeleteModal name={'eliminar la adición del menú'} open={showAlert} close={handleCloseAlert} delete={deleteAddition} />
         </div>
     )
 }

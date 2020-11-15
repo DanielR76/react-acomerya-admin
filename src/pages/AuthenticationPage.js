@@ -1,12 +1,20 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import { AuthContext } from '../context/Auth'
 import icono from '../assets/icon/acomerya-logo-name.svg'
 import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import firebase from 'firebase'
 import { db } from '../utils/firebase'
 
 function AuthenticationPage({ history }) {
+
+    const [showAlert, setShowAlert] = useState(false)
+    const handleOpenAlert = () => setShowAlert(true)
+    const handleCloseAlert = () => setShowAlert(false)
 
     const initialStateValues = {
         email: "",
@@ -21,14 +29,13 @@ function AuthenticationPage({ history }) {
             ...values,
             [e.target.name]: e.target.value
         })
-        console.log(values)
     }
 
     //Validacion de autenticacion
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (values.email === "" || values.password === "") {
-            alert("Todos los campos son obligatorios");
+            handleOpenAlert()
         } else {
             await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
                 .then(() => {
@@ -36,7 +43,7 @@ function AuthenticationPage({ history }) {
                     getRestaurantById(user.uid)
                 })
                 .catch(() => {
-                    alert('Usuario o clave erronea')
+                    handleOpenAlert()
                     setValues({
                         ...values,
                         password: ""
@@ -51,25 +58,48 @@ function AuthenticationPage({ history }) {
             .get()
             .then((querySnapshot) => {
                 if (querySnapshot.size) {
-                    querySnapshot.forEach((doc) => {
-                        console.log(`Si existe en la BD ${doc.id}`)
+                    querySnapshot.forEach(() => {
                         history.push("/dishes")
                         /* return (
                             <Redirect to="/dishes" />
                         ) */
                     })
                 } else {
-                    console.log('no existe en tabla')
                     alert('no existe en tabla')
                 }
             }).catch((error) => { console.log(`este es el error ${error}`) })
     }
 
-    const { currentUser } = useContext(AuthContext)
-
-    /* if (!currentUser) {
+    /*const { currentUser } = useContext(AuthContext)
+     if (!currentUser) {
         return <Redirect to="/dishes" />
     } */
+
+    const alertValidation = () => {
+        return (
+            <div>
+                <Dialog
+                    open={showAlert}
+                    onClose={handleCloseAlert}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Algo ha salido mal :( valida tus datos e intenta nuevamente
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={handleCloseAlert}
+                            variant="outlined"
+                            color="primary">
+                            Aceptar
+                         </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+        )
+    }
 
     return (
         <div className="container__main">
@@ -84,19 +114,22 @@ function AuthenticationPage({ history }) {
                         label="Correo electrónico"
                         name="email"
                         value={values.email}
-                        onChange={handleChange} />
+                        onChange={handleChange}
+                        required="true" />
                     <TextField
                         id="standard-password-input"
-                        label="Constraseña"
+                        label="Contraseña"
                         type="password"
                         name="password"
                         value={values.password}
                         onChange={handleChange}
+                        required="true"
                     />
                     <button type="submit" className="login__form--submit">Continuar</button>
                 </form>
             </div>
-            <a className="link__freepik" href='https://www.freepik.es/'>Foto de Comida creado por freepik</a>
+            {alertValidation()}
+            <a className="link__freepik" href='https://www.freepik.es/'>Foto de Comida creada por freepik</a>
         </div>
     )
 }

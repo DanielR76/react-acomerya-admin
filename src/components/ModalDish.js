@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddIcon from '@material-ui/icons/Add'
 import Switch from '@material-ui/core/Switch'
 import IconMoney from '../assets/icon/iconos-moneda-01.svg'
@@ -134,7 +134,7 @@ function ModalDish(props) {
                             <IconButton
                                 aria-label="eliminar"
                                 onClick={() => handleRemoveIngre(i)}>
-                                <DeleteIcon
+                                <HighlightOffIcon
                                     size="small"
                                     color="secondary"
                                 />
