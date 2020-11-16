@@ -84,8 +84,8 @@ function OrdersPage() {
                                 <h6> {e.dishName} </h6>
                             </div>
                             <div className="dishes__body">
-                                <div>{e.description} </div>
-                                <div className="dishes__body--ingredient">
+                                <h6>{e.description} </h6>
+                                {e.ingredient.length > 0 ? <div className="dishes__body--ingredient">
                                     Ingredientes
                                     <div className="ingredient">
                                         {e.ingredient.map((ingre) => {
@@ -94,8 +94,8 @@ function OrdersPage() {
                                             )
                                         })}
                                     </div>
-                                </div>
-                                <div className="dishes__body--addition">
+                                </div> : null}
+                                {e.addition.length > 0 ? <div className="dishes__body--addition">
                                     Adiciones
                                     <div className="addition">
                                         {e.addition.map((addit) => {
@@ -104,7 +104,7 @@ function OrdersPage() {
                                             )
                                         })}
                                     </div>
-                                </div>
+                                </div> : null}
                             </div>
                             <div className="dishes__footer">
                                 <div className="footer__amount">Cantidad: {e.quantity}</div>
@@ -124,7 +124,6 @@ function OrdersPage() {
             )
         }
     }
-
 
     return (
         <div className="container__orders">

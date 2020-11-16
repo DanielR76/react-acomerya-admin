@@ -10,7 +10,6 @@ function ReservationPage() {
     const handleCloseAlert = (action) => setShowAlert(action)
     const [currentId, setCurrentId] = useState('')
     const [selectStatus, setSelectStatus] = useState('')
-    //var reserv
 
     //Obtener lista de reservas pending
     const [reservations, setReservation] = useState([])
@@ -93,6 +92,7 @@ function ReservationPage() {
 
     const requestPending = reservations.map((element) => {
         let datePending = new Date(element.date.toMillis())
+        let reservationDate = `${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getHours()}:${datePending.getMinutes()}`
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header">
@@ -100,41 +100,37 @@ function ReservationPage() {
                 </div>
                 <div className="card__reservation--body">
                     <div className="reservation__name">
-                        <label>Nombre: </label>
-                        <label>{element.name}</label>
+                        <label className="reservation__firts">Nombre: </label>
+                        <label className="reservation__second">{element.name}</label>
                     </div>
                     <div className="reservation__date">
-                        <label>Fecha: </label>
-                        <label>{`${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getHours()}:${datePending.getMinutes()}`}</label>
+                        <label className="reservation__firts">Fecha: </label>
+                        <label className="reservation__second">{reservationDate}</label>
                     </div>
                     <div className="reservation__amount">
-                        <label>Cantidad: </label>
-                        <label>{element.quantity}</label>
+                        <label className="reservation__firts">Cantidad: </label>
+                        <label className="reservation__second">{element.quantity}</label>
                     </div>
                     <div className="reservation__description">
-                        <label>Descripcion: </label>
-                        <label>{element.summary}</label>
+                        <label className="reservation__firts">Descripcion: </label>
+                        <label className="reservation__second">{element.summary}</label>
                     </div>
                 </div>
                 <div className="card__reservation--footer">
                     <button
                         className="accept"
                         onClick={() => {
-                            //reserv = element.id
                             setCurrentId(element.id)
                             handleOpenAlert()
                             setSelectStatus('accept')
-                            /* handleAccept() */
                         }}>
                         Aceptar</button>
                     <button
                         className="reject"
                         onClick={() => {
-                            /* reserv = element.id */
                             setCurrentId(element.id)
                             handleOpenAlert()
                             setSelectStatus('reject')
-                            /* handleReject() */
                         }}>
                         Rechazar</button>
                 </div>
@@ -144,6 +140,7 @@ function ReservationPage() {
 
     const requestAccept = accepts.map(element => {
         let dateAccept = new Date(element.date.toMillis())
+        let reservationDate = `${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getHours()}:${dateAccept.getMinutes()}`
         return (
             <div className="card__reservation">
                 <div className="card__reservation--header--accept">
@@ -151,20 +148,20 @@ function ReservationPage() {
                 </div>
                 <div className="card__reservation--body">
                     <div className="reservation__name">
-                        <label>Nombre: </label>
-                        <label>{element.name}</label>
+                        <label className="reservation__firts">Nombre: </label>
+                        <label className="reservation__second">{element.name}</label>
                     </div>
                     <div className="reservation__date">
-                        <label>Fecha: </label>
-                        <label>{`${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getHours()}:${dateAccept.getMinutes()}`}</label>
+                        <label className="reservation__firts">Fecha: </label>
+                        <label className="reservation__second">{reservationDate}</label>
                     </div>
                     <div className="reservation__amount">
-                        <label>Cantidad: </label>
-                        <label>{element.quantity}</label>
+                        <label className="reservation__firts">Cantidad: </label>
+                        <label className="reservation__second">{element.quantity}</label>
                     </div>
                     <div className="reservation__description">
-                        <label>Descripcion: </label>
-                        <label>{element.summary}</label>
+                        <label className="reservation__firts">Descripcion: </label>
+                        <label className="reservation__second">{element.summary}</label>
                     </div>
                 </div>
             </div>
@@ -180,20 +177,20 @@ function ReservationPage() {
                 </div>
                 <div className="card__reservation--body">
                     <div className="reservation__name">
-                        <label>Nombre: </label>
-                        <label>{element.name}</label>
+                        <label className="reservation__firts">Nombre: </label>
+                        <label className="reservation__second">{element.name}</label>
                     </div>
                     <div className="reservation__date">
-                        <label>Fecha: </label>
-                        <label>{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getHours()}:${dateReject.getMinutes()}`}</label>
+                        <label className="reservation__firts">Fecha: </label>
+                        <label className="reservation__second">{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getHours()}:${dateReject.getMinutes()}`}</label>
                     </div>
                     <div className="reservation__amount">
-                        <label>Cantidad: </label>
-                        <label>{element.quantity}</label>
+                        <label className="reservation__firts">Cantidad: </label>
+                        <label className="reservation__second">{element.quantity}</label>
                     </div>
                     <div className="reservation__description">
-                        <label>Descripcion: </label>
-                        <label>{element.summary}</label>
+                        <label className="reservation__firts">Descripcion: </label>
+                        <label className="reservation__second">{element.summary}</label>
                     </div>
                 </div>
             </div>
@@ -223,4 +220,4 @@ function ReservationPage() {
     )
 }
 
-export default ReservationPage
+export default ReservationPage 

@@ -57,7 +57,7 @@
   background-color: white;
   box-shadow: $card-shadow;
   border-radius: 10px;
-  margin: 5% 15%;
+  margin: 5% 10%;
   padding: 8px;
 
   .card__reservation--header {
@@ -73,7 +73,17 @@
 
     .reservation__name,
     .reservation__date,
-    .reservation__amount {
+    .reservation__amount,
+    .reservation__description {
+      display: flex;
+
+      .reservation__firts {
+        width: 33%;
+        font-weight: bold;
+      }
+      .reservation__second {
+        width: 67%;
+      }
     }
   }
 

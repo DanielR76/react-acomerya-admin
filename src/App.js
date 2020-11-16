@@ -8,7 +8,7 @@ import ProfilePage from './pages/ProfilePage'
 import DishesPage from './pages/DishesPage'
 import OrdersPage from './pages/OrdersPage'
 import ReservationPage from './pages/ReservationPage'
-import NotFound from './components/NotFound'
+/* import NotFound from './components/NotFound' */
 
 function App() {
   return (
@@ -25,10 +25,11 @@ function App() {
                 <PrivateRoute exact path="/dishes" component={DishesPage} />
                 <PrivateRoute exact path="/orders" component={OrdersPage} />
                 <PrivateRoute exact path="/reservation" component={ReservationPage} />
-                {/* <Route component={NotFound} /> */}
+
               </div>
             </section>
           </AdminLayout>
+          {/* <Route component={NotFound} /> */}
         </Switch>
       </Router>
     </AuthProvider>
