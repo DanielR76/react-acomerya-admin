@@ -27,45 +27,34 @@ function DishesPage() {
   } = useDishesServices();
 
   //estructura de cards de platos
-  const DishesCard = dish.map((todo, i) => {
-    return (
-      <div className="card__dish__cont" key={`0${todo.id}`}>
-        <img
-          key={`1${todo.id}`}
-          className="card__dish--image"
-          src={todo.imagePath}
-          alt="imageDish"
-        />
-        <div className="card__dish--cont">
-          <div className="dish__name" key={`2${todo.id}`}>
-            {todo.dishName}
-          </div>
-          <div className="dish__method">
-            <IconButton
-              key={`3${todo.id}`}
-              aria-label="editar"
-              onClick={() => {
-                setCurrentDish(todo.id);
-                handleShow();
-              }}
-            >
-              <Edit size="small" color="primary" />
-            </IconButton>
-            <IconButton
-              key={`4${todo.id}`}
-              aria-label="eliminar"
-              onClick={() => {
-                setCurrentDish(todo.id);
-                handleOpenAlert();
-              }}
-            >
-              <HighlightOff size="small" color="secondary" />
-            </IconButton>
-          </div>
+  const DishesCard = dish.map((todo, i) => (
+    <div className="card__dish__cont" key={todo.id}>
+      <img className="card__dish--image" src={todo.imagePath} alt="imageDish" />
+      <div className="card__dish--cont">
+        <div className="dish__name">{todo.dishName}</div>
+        <div className="dish__method">
+          <IconButton
+            aria-label="editar"
+            onClick={() => {
+              setCurrentDish(todo.id);
+              handleShow();
+            }}
+          >
+            <Edit size="small" color="primary" />
+          </IconButton>
+          <IconButton
+            aria-label="eliminar"
+            onClick={() => {
+              setCurrentDish(todo.id);
+              handleOpenAlert();
+            }}
+          >
+            <HighlightOff size="small" color="secondary" />
+          </IconButton>
         </div>
       </div>
-    );
-  });
+    </div>
+  ));
 
   return (
     <div className="container__dishes">
@@ -87,10 +76,8 @@ function DishesPage() {
         <ModalDish
           show={show}
           close={handleClose}
-          {...{
-            addOrEdit: addDish,
-            idDish: currentDish,
-          }}
+          addOrEdit={addDish}
+          idDish={currentDish}
         />
         <DeleteModal
           name={"eliminar el plato del menú"}

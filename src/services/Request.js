@@ -4,8 +4,8 @@ const FireRequest = () => {
   const getService = async (document, id) =>
     await db.collection(document).doc(id).get();
 
-  const getServiceCondition = async (document, firts, operator, second) =>
-    await db.collection(document).where(firts, operator, second).get();
+  const getServiceCondition = async (document, firts, second) =>
+    await db.collection(document).where(firts, "==", second).get();
 
   const postService = async (document, data) =>
     await db.collection(document).doc().set(data);

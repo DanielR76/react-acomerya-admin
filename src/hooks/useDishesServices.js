@@ -28,7 +28,6 @@ export const useDishesServices = () => {
       .getServiceCondition(
         "dishDocument",
         "idRestaurant",
-        "==",
         firebase.auth().currentUser.uid
       )
       .then((response) => {
