@@ -1,6 +1,10 @@
 import { db } from "../utils/firebase";
+import firebase from "firebase";
 
 const FireRequest = () => {
+  const signIn = async (user, pass) =>
+    await firebase.auth().signInWithEmailAndPassword(user, pass);
+
   const getService = async (document, id) =>
     await db.collection(document).doc(id).get();
 
@@ -17,6 +21,7 @@ const FireRequest = () => {
     await db.collection(document).doc(id).delete();
 
   return {
+    signIn,
     getService,
     getServiceCondition,
     postService,
