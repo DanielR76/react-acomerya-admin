@@ -12,8 +12,8 @@ export const useDishesServices = () => {
   const [listOfDishes, setListOfDishes] = useState({ ...initialArray });
 
   useEffect(() => {
-    if (firebase.auth().currentUser.uid) getDishes();
-  }, [firebase.auth().currentUser.uid]);
+    getDishes();
+  }, []);
 
   //Get all dishes and set state
   const getDishes = () => {

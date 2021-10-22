@@ -1,22 +1,30 @@
-import React, { useState, useEffect } from 'react'
-import firebase from 'firebase'
+import React, { useEffect, createContext, useReducer } from "react";
 
-export const AuthContext = React.createContext()
+export const AuthContext = createContext();
+
+const initialState = {
+  user: "",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "signin":
+      return { ...state, ...action.payload };
+    default:
+      return { ...initialState };
+  }
+};
 
 export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null)
+  const [state, authDispatch] = useReducer(reducer, initialState);
 
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(setCurrentUser)
-    }, [])
+  useEffect(() => { 
+    console.log(state);
+  }, [state]);
 
-    return (
-        <AuthContext.Provider
-            value={{ currentUser }}
-        >
-            {children}
-        </AuthContext.Provider>
-    )
-}
-
-
+  return (
+    <AuthContext.Provider value={[state, authDispatch]}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

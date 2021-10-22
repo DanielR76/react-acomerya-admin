@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
 import {
@@ -13,6 +13,7 @@ import icono from "../assets/icon/acomerya-logo-name.svg";
 
 import FireRequest from "../services/Request";
 import { useRestaurantService } from "../hooks/useRestaurantService";
+import { AuthContext } from "../context/Auth";
 
 const initialValues = {
   email: "",
@@ -20,6 +21,7 @@ const initialValues = {
 };
 
 function AuthenticationPage({ history }) {
+  const [, authDispatch] = useContext(AuthContext);
   const [showAlert, setShowAlert] = useState(false);
   const [values, setValues] = useState({ ...initialValues });
   const { getRestaurantById } = useRestaurantService();
@@ -29,6 +31,7 @@ function AuthenticationPage({ history }) {
     FireRequest()
       .signIn(values.email, values.password)
       .then((response) => {
+        authDispatch({ type: "signin", payload: { user: response.user.uid } });
         getRestaurantById(history, response.user.uid);
       })
       .catch((e) => console.log(e));
