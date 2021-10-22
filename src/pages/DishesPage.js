@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import ModalDish from "../components/ModalDish";
 import AdditionalDish from "../components/AdditionalDish";
@@ -12,22 +12,13 @@ import IconButton from "@material-ui/core/IconButton";
 
 function DishesPage() {
   const { currentUser } = useContext(AuthContext);
-  const {
-    dish,
-    setCurrentDish,
-    handleShow,
-    show,
-    showAlert,
-    handleOpenAlert,
-    handleCloseAlert,
-    deleteDish,
-    currentDish,
-    addDish,
-    handleClose,
-  } = useDishesServices();
+  const [currentDish, setCurrentDish] = useState("");
+  const [visibleModalDish, setVisibleModalDish] = useState(false);
+  const [visibleAlert, setVisibleAlert] = useState(false);
+  const { listOfDishes, addDish, editDish, deleteDish } = useDishesServices();
 
   //estructura de cards de platos
-  const DishesCard = dish.map((todo, i) => (
+  const DishesCard = listOfDishes?.data.map((todo, i) => (
     <div className="card__dish__cont" key={todo.id}>
       <img className="card__dish--image" src={todo.imagePath} alt="imageDish" />
       <div className="card__dish--cont">
@@ -37,7 +28,7 @@ function DishesPage() {
             aria-label="editar"
             onClick={() => {
               setCurrentDish(todo.id);
-              handleShow();
+              setVisibleModalDish(true);
             }}
           >
             <Edit size="small" color="primary" />
@@ -46,7 +37,7 @@ function DishesPage() {
             aria-label="eliminar"
             onClick={() => {
               setCurrentDish(todo.id);
-              handleOpenAlert();
+              setVisibleAlert(true);
             }}
           >
             <HighlightOff size="small" color="secondary" />
@@ -65,7 +56,7 @@ function DishesPage() {
             <IconButton
               color="primary"
               aria-label="Añadir plato"
-              onClick={handleShow}
+              onClick={() => setVisibleModalDish(true)}
             >
               <Add />
             </IconButton>
@@ -74,16 +65,27 @@ function DishesPage() {
           <div className="card__dish">{DishesCard}</div>
         </div>
         <ModalDish
-          show={show}
-          close={handleClose}
-          addOrEdit={addDish}
           idDish={currentDish}
+          addOrEdit={(e) =>
+            currentDish === "" ? addDish(e) : editDish(currentDish, e)
+          }
+          show={visibleModalDish}
+          close={() => {
+            setVisibleModalDish(false);
+            setTimeout(() => {
+              setCurrentDish("");
+            }, 0);
+          }}
         />
         <DeleteModal
           name={"eliminar el plato del menú"}
-          open={showAlert}
-          close={handleCloseAlert}
-          delete={deleteDish}
+          open={visibleAlert}
+          close={setVisibleAlert}
+          deleteDish={() => {
+            setVisibleAlert(false);
+            deleteDish(currentDish);
+            setCurrentDish("");
+          }}
         />
       </div>
       <div className="container__add">

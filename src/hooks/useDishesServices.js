@@ -3,27 +3,21 @@ import { useState, useEffect } from "react";
 import firebase from "firebase";
 import FireRequest from "../services/Request";
 
+const initialArray = {
+  data: [],
+  loading: false,
+};
+
 export const useDishesServices = () => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [currentDish, setCurrentDish] = useState("");
-  const [show, setShow] = useState(false);
-  const [dish, setDish] = useState([]);
-  const handleShow = () => setShow(true);
-  const handleOpenAlert = () => setShowAlert(true);
-  const handleCloseAlert = (action) => setShowAlert(action);
-  const handleClose = () => {
-    setShow(false);
-    setTimeout(() => {
-      setCurrentDish("");
-    }, 0);
-  };
+  const [listOfDishes, setListOfDishes] = useState({ ...initialArray });
 
   useEffect(() => {
     getDishes();
   }, []);
 
-  //Obtener platos de firebase
+  //Get all dishes and set state
   const getDishes = () => {
+    setListOfDishes({ ...listOfDishes, loading: true });
     FireRequest()
       .getServiceCondition(
         "dishDocument",
@@ -38,12 +32,15 @@ export const useDishesServices = () => {
             id: doc.id,
           });
         });
-        setDish(state);
+        setListOfDishes({ data: state, loading: false });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setListOfDishes({ ...initialArray });
+        console.log(e);
+      });
   };
 
-  //Crear o editar platos
+  //Create new dish
   const addDish = (object) => {
     FireRequest()
       .postService("dishDocument", {
@@ -57,22 +54,22 @@ export const useDishesServices = () => {
     getDishes();
   };
 
-  //Editar plato seleccionado
-  const editDish = (object) => {
+  //Edit selected dish
+  const editDish = (currentDish, payload) => {
     FireRequest()
       .updateService("dishDocument", currentDish, {
-        ...object,
-        price: Number(object.price),
+        ...payload,
+        price: Number(payload.price),
       })
       .then(() => console.log("Se cargó correctamente al documento"))
       .catch((error) =>
         console.error("Hubo un error al cargar en FireStore: ", error)
       );
+    getDishes();
   };
 
-  //eliminar platos
-  const deleteDish = () => {
-    setShowAlert(false);
+  //Delete dish
+  const deleteDish = (currentDish) => {
     FireRequest()
       .deleteService("dishDocument", currentDish)
       .then(() => {
@@ -81,21 +78,13 @@ export const useDishesServices = () => {
       .catch((error) => {
         console.error("Error eliminando el plato: ", error);
       });
-    setCurrentDish("");
     getDishes();
   };
 
   return {
-    dish,
-    setCurrentDish,
-    handleShow,
-    show,
-    showAlert,
-    handleOpenAlert,
-    handleCloseAlert,
-    deleteDish,
-    currentDish,
+    listOfDishes,
     addDish,
-    handleClose,
+    editDish,
+    deleteDish,
   };
 };
