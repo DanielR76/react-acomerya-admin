@@ -7,8 +7,9 @@
 @import "sass/request";
 
 * {
-  /*   margin: 0px !important;
-  padding: 0px !important; */
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
   font-family: $font-2;
 }
 

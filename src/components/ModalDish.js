@@ -26,7 +26,7 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
     status: true,
   };
 
-  const [values, setValues] = useState(initialStateValues);
+  const [values, setValues] = useState({ ...initialStateValues });
 
   //Obtener plato por el id
   const getDishById = async (id) => {

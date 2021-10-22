@@ -8,7 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import DishesPage from "./pages/DishesPage";
 import OrdersPage from "./pages/OrdersPage";
 import ReservationPage from "./pages/ReservationPage";
-import NotFound from "./components/NotFound";
+// import NotFound from "./components/NotFound";
 
 function App() {
   return (

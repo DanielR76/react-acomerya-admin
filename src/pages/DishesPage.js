@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import ModalDish from "../components/ModalDish";
 import AdditionalDish from "../components/AdditionalDish";
 import DeleteModal from "../components/DeleteModal";
-import { AuthContext } from "../context/Auth";
 
 import { useDishesServices } from "../hooks/useDishesServices";
 
@@ -11,7 +10,6 @@ import { Edit, Add, HighlightOff } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 
 function DishesPage() {
-  const { currentUser } = useContext(AuthContext);
   const [currentDish, setCurrentDish] = useState("");
   const [visibleModalDish, setVisibleModalDish] = useState(false);
   const [visibleAlert, setVisibleAlert] = useState(false);
