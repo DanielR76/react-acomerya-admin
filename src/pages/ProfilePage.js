@@ -1,65 +1,77 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { UploadButtons } from '../components/MaterialUI'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import IconButton from '@material-ui/core/IconButton'
 import CodesRestaurant from '../components/CodesRestaurant'
-import firebase from 'firebase'
-import { db, storage } from '../utils/firebase'
 
+import { useProfileServices } from '../hooks/useProfileServices'
 
 function ProfilePage() {
 
-    const [restaurant, setRestaurant] = useState('')
-    const [images, setImages] = useState([])
+    const {
+        restaurant,
+        images,
+        handleLoad,
+        editRestaurant,
+        setImages,
+        setRestaurant,
 
-    //Obtener informacion del restaurante
-    const getRestaurant = async () => {
-        db.collection("restaurantsDocument").where("idUser", "==", firebase.auth().currentUser.uid)
-            .onSnapshot(querySnapshot => {
-                let state = ''
-                querySnapshot.forEach((doc) => {
-                    state = {
-                        ...doc.data(),
-                        id: doc.id
-                    }
-                })
-                setRestaurant(state)
-                setImages(state.imagePath)
-            })
-    }
+    } = useProfileServices()
 
-    useEffect(() => {
-        getRestaurant()
-    }, [])
+    // const [restaurant, setRestaurant] = useState('')
+    // const [images, setImages] = useState([])
 
-    //Editar restaurante
-    const editRestaurant = async () => {
-        await db.collection('restaurantsDocument').doc(restaurant.id).update(restaurant)
-            .then(() => console.log("Se actualizó correctamente al documento"))
-            .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
-    }
+    // useEffect(() => {
+    //     getRestaurant()
+    // }, [])
 
-    //Guardar imagen en storage y luego traer la ruta
-    const handleLoad = e => {
-        let totalImage = images
-        const file = e.target.files[0]
-        const uploadImage = storage.ref(`imagesRestaurants/${file.name}`)
-        const task = uploadImage.put(file)
-        const save = () => {
-            task.on('state_changed', (snapshot) => { },
-                (error) => { console.error(error.message) },
-                () => {
-                    storage.ref("imagesRestaurants").child(file.name).getDownloadURL()
-                        .then(url => {
-                            setImages(images.concat(url))
-                            totalImage.push(url)
-                        })
-                    //.then(url => {setImages(images.concat(url))})
-                })
-        }
-        save()
-        setRestaurant({ ...restaurant, imagePath: totalImage })
-    }
+
+    // //Obtener informacion del restaurante
+    // const getRestaurant = async () => {
+    //     db.collection("restaurantsDocument").where("idUser", "==", firebase.auth().currentUser.uid)
+    //         .onSnapshot(querySnapshot => {
+    //             let state = ''
+    //             querySnapshot.forEach((doc) => {
+    //                 state = {
+    //                     ...doc.data(),
+    //                     id: doc.id
+    //                 }
+    //             })
+    //             setRestaurant(state)
+    //             setImages(state.imagePath)
+    //         })
+    // }
+
+
+
+    // //Editar restaurante
+    // const editRestaurant = async () => {
+    //     await db.collection('restaurantsDocument').doc(restaurant.id).update(restaurant)
+    //         .then(() => console.log("Se actualizó correctamente al documento"))
+    //         .catch(error => console.error("Hubo un error al actualizar en FireStore: ", error))
+    // }
+
+    // //Guardar imagen en storage y luego traer la ruta
+    // const handleLoad = e => {
+    //     let totalImage = images
+    //     const file = e.target.files[0]
+    //     const uploadImage = storage.ref(`imagesRestaurants/${file.name}`)
+    //     const task = uploadImage.put(file)
+    //     const save = () => {
+    //         task.on('state_changed', (snapshot) => { },
+    //             (error) => { console.error(error.message) },
+    //             () => {
+    //                 storage.ref("imagesRestaurants").child(file.name).getDownloadURL()
+    //                     .then(url => {
+    //                         setImages(images.concat(url))
+    //                         totalImage.push(url)
+    //                     })
+    //                 //.then(url => {setImages(images.concat(url))})
+    //             })
+    //     }
+    //save()
+    //setRestaurant({ ...restaurant, imagePath: totalImage })
+    // }
 
     const handleSubmit = () => {
         editRestaurant()
@@ -115,7 +127,7 @@ function ProfilePage() {
                         className="login__form--submit"
                         onClick={handleSubmit}>
                         Guardar
-                </button>
+                    </button>
                 </div>
             </div>
 
