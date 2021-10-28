@@ -1,56 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DeleteModal from "../components/DeleteModal";
 import IconMoney from "../assets/icon/iconos-moneda-01.svg";
-import firebase from "firebase";
-import { db } from "../utils/firebase";
 
-function OrdersPage() {
+import { useOrderService } from "../hooks/useOrderService";
+
+const OrdersPage = () => {
   const [showAlert, setShowAlert] = useState(false);
-  const handleOpenAlert = () => setShowAlert(true);
-  const handleCloseAlert = (action) => setShowAlert(action);
-  const [requests, setRequests] = useState([]);
   const [requestDish, setRequestDish] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
   const [currentOrder, setCurrentOrder] = useState("");
+  const { requests, edditOrder } = useOrderService(currentOrder);
 
-  //Obtener lista de reservas pendientes
-  const getRequest = async () => {
-    db.collection("requestsDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "active")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setRequests(state);
-      });
-  };
+  const handleCloseAlert = (action) => setShowAlert(action);
 
-  useEffect(() => {
-    getRequest();
-  }, []);
-
-  //Editar ordenen la BD
-  const edditOrder = async (object) => {
-    console.log(object);
-    await db
-      .collection("requestsDocument")
-      .doc(currentOrder)
-      .update(object)
-      .then(() => console.log("Se actualizó correctamente al documento"))
-      .catch((error) =>
-        console.error("Hubo un error al actualizar en FireStore: ", error)
-      );
-  };
-
-  //Cambiar estado a pagado
+  //Change status to paid
   const handlePaid = () => {
     setShowAlert(false);
-    console.log(currentOrder);
     if (currentOrder) {
       edditOrder({ status: "pagado" });
       setRequestDish("");
@@ -77,8 +42,7 @@ function OrdersPage() {
 
   const dishesContain = () => {
     if (requestDish !== "") {
-      let value = requestDish.dishes;
-      return value.map((e, index) => {
+      return requestDish?.dishes.map((e, index) => {
         return (
           <div className="request__dishes--cards" key={index}>
             <div className="dishes__header">
@@ -87,7 +51,7 @@ function OrdersPage() {
             </div>
             <div className="dishes__body">
               <h6>{e.description} </h6>
-              {e.ingredient.length > 0 ? (
+              {e.ingredient.length > 0 && (
                 <div className="dishes__body--ingredient">
                   Ingredientes
                   <div className="ingredient">
@@ -96,8 +60,8 @@ function OrdersPage() {
                     })}
                   </div>
                 </div>
-              ) : null}
-              {e.addition.length > 0 ? (
+              )}
+              {e.addition.length > 0 && (
                 <div className="dishes__body--addition">
                   Adiciones
                   <div className="addition">
@@ -106,7 +70,7 @@ function OrdersPage() {
                     })}
                   </div>
                 </div>
-              ) : null}
+              )}
             </div>
             <div className="dishes__footer">
               <div className="footer__amount">Cantidad: {e.quantity}</div>
@@ -129,7 +93,7 @@ function OrdersPage() {
         <div className="orders">
           <div className="request__orders">{dishesTable}</div>
         </div>
-        {currentOrder ? (
+        {currentOrder && (
           <div className="request__paid">
             <div className="request__paid--money">
               <img src={IconMoney} alt="icon" />
@@ -137,13 +101,13 @@ function OrdersPage() {
             </div>
             <button
               onClick={() => {
-                handleOpenAlert();
+                setShowAlert(true);
               }}
             >
               Pagado
             </button>
           </div>
-        ) : null}
+        )}
       </div>
       <div className="container__orders--dishes">
         <div className="request__dishes">{dishesContain()}</div>
@@ -156,6 +120,6 @@ function OrdersPage() {
       />
     </div>
   );
-}
+};
 
 export default OrdersPage;

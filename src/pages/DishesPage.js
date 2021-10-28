@@ -59,7 +59,6 @@ function DishesPage() {
               <Add />
             </IconButton>
           </div>
-
           <div className="card__dish">{DishesCard}</div>
         </div>
         <ModalDish
