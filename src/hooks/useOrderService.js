@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import FireRequest from "../services/Request";
 import firebase from "firebase";
 import { db } from "../utils/firebase";
 
@@ -28,12 +29,9 @@ export const useOrderService = (currentOrder) => {
   };
 
   //Edit order
-  const edditOrder = async (object) => {
-    console.log(object);
-    await db
-      .collection("requestsDocument")
-      .doc(currentOrder)
-      .update(object)
+  const edditOrder = (object) => {
+    FireRequest()
+      .updateService("requestsDocument", currentOrder, object)
       .then(() => console.log("Se actualizó correctamente al documento"))
       .catch((error) =>
         console.error("Hubo un error al actualizar en FireStore: ", error)

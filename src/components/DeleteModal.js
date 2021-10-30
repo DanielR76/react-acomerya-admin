@@ -7,7 +7,7 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 
-function DeleteModal({ name, open, close, deleteDish }) {
+function DeleteModal({ name, open, close, remove }) {
   return (
     <div>
       <Dialog
@@ -29,7 +29,7 @@ function DeleteModal({ name, open, close, deleteDish }) {
           >
             Cancelar
           </Button>
-          <Button onClick={deleteDish} variant="outlined" color="primary">
+          <Button onClick={remove} variant="outlined" color="primary">
             Aceptar
           </Button>
         </DialogActions>

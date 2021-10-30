@@ -116,7 +116,7 @@ const OrdersPage = () => {
         name={"marcar el pedido como pagado"}
         open={currentOrder ? showAlert : null}
         close={handleCloseAlert}
-        delete={handlePaid}
+        remove={handlePaid}
       />
     </div>
   );
