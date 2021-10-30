@@ -11,7 +11,7 @@ const FireRequest = () => {
   const getServiceCondition = async (document, firts, second) =>
     await db.collection(document).where(firts, "==", second).get();
 
-  const getServiceSnapShot = async (document, id) =>
+  const getServiceSnapShot = async (document, firts, second) =>
     await db.collection(document).where(firts, "==", second).onSnapshot();
 
   const postService = async (document, data) =>

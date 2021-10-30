@@ -16,14 +16,14 @@ const reducer = (state, action) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [state, authDispatch] = useReducer(reducer, initialState);
+  const [authState, authDispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => { 
-    console.log(state);
-  }, [state]);
+  useEffect(() => {
+    console.log(authState);
+  }, [authState]);
 
   return (
-    <AuthContext.Provider value={[state, authDispatch]}>
+    <AuthContext.Provider value={[authState, authDispatch]}>
       {children}
     </AuthContext.Provider>
   );
