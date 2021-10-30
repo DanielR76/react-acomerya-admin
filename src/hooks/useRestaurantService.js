@@ -14,6 +14,7 @@ export const useRestaurantService = () => {
     if (authState?.user) getRestaurant();
   }, [authState]);
 
+  //Check existence of restaurant & redirect
   const getRestaurantById = (history, id) => {
     FireRequest()
       .getServiceCondition("restaurantsDocument", "idUser", id)
@@ -29,7 +30,8 @@ export const useRestaurantService = () => {
 
   //Get restaurant info
   const getRestaurant = async () => {
-    db.collection("restaurantsDocument")
+    await db
+      .collection("restaurantsDocument")
       .where("idUser", "==", firebase.auth().currentUser.uid)
       .onSnapshot((querySnapshot) => {
         let state = "";
@@ -46,10 +48,8 @@ export const useRestaurantService = () => {
 
   //Edit restaurant
   const editRestaurant = async () => {
-    await db
-      .collection("restaurantsDocument")
-      .doc(restaurant.id)
-      .update(restaurant)
+    FireRequest()
+      .updateService("restaurantsDocument", restaurant.id, restaurant)
       .then(() => console.log("Se actualizó correctamente al documento"))
       .catch((error) =>
         console.error("Hubo un error al actualizar en FireStore: ", error)
@@ -78,7 +78,6 @@ export const useRestaurantService = () => {
               setImages(images.concat(url));
               totalImage.push(url);
             });
-          //.then(url => {setImages(images.concat(url))})
         }
       );
     };

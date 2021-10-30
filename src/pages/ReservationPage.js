@@ -1,86 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DeleteModal from "../components/DeleteModal";
-import firebase from "firebase";
-import { db } from "../utils/firebase";
 
-function ReservationPage() {
+import { useReservation } from "../hooks/useReservation";
+
+const ReservationPage = () => {
   const [showAlert, setShowAlert] = useState(false);
   const handleOpenAlert = () => setShowAlert(true);
   const handleCloseAlert = (action) => setShowAlert(action);
   const [currentId, setCurrentId] = useState("");
   const [selectStatus, setSelectStatus] = useState("");
-
-  //Obtener lista de reservas pending
-  const [reservations, setReservation] = useState([]);
-  const getReservations = async () => {
-    db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "pendiente")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setReservation(state);
-      });
-  };
-
-  //Obtener lista de reservas accept
-  const [accepts, setAccepts] = useState([]);
-  const getAcceptsR = async () => {
-    db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "aceptado")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setAccepts(state);
-      });
-  };
-
-  //Obtener lista de reservas reject
-  const [rejects, setRejects] = useState([]);
-  const getRejectsR = async () => {
-    db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "rechazado")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setRejects(state);
-      });
-  };
-
-  useEffect(() => {
-    getReservations();
-    getAcceptsR();
-    getRejectsR();
-  }, []);
-
-  //Cambiar estado de una reserva en BD
-  const editReservation = async (object) => {
-    await db
-      .collection("reservationDocument")
-      .doc(currentId)
-      .update(object)
-      .then(() => console.log("Se actualizó correctamente al documento"))
-      .catch((error) =>
-        console.error("Hubo un error al actualizar en FireStore: ", error)
-      );
-  };
+  const { reservations, accepts, rejects, editReservation } =
+    useReservation(currentId);
 
   //Cambiar estado de reserva seleccionada
   const handleStatus = () => {
@@ -236,6 +166,6 @@ function ReservationPage() {
       />
     </div>
   );
-}
+};
 
 export default ReservationPage;
