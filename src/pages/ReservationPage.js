@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteModal from "../components/DeleteModal";
 import moment from "moment";
 
@@ -10,18 +10,26 @@ const ReservationPage = () => {
   const handleCloseAlert = (action) => setShowAlert(action);
   const [currentId, setCurrentId] = useState("");
   const [selectStatus, setSelectStatus] = useState("");
-  const { reservations, accepts, rejects, editReservation } =
-    useReservation(currentId);
+  const {
+    reservations,
+    accepts,
+    rejects,
+    editReservation,
+    getReservations,
+    getAcceptsR,
+    getRejectsR,
+  } = useReservation(currentId);
 
-  const statusReservation = {
-    accept: "aceptado",
-    reject: "rechazado",
-  };
+  useEffect(() => {
+    getReservations();
+    getAcceptsR();
+    getRejectsR();
+  }, []);
 
   //Change reservation status
   const handleStatus = () => {
     setShowAlert(false);
-    editReservation({ status: selectStatus[statusReservation] || "" });
+    editReservation({ status: selectStatus });
     setSelectStatus("");
     setCurrentId("");
   };
@@ -57,7 +65,7 @@ const ReservationPage = () => {
           onClick={() => {
             setCurrentId(element.id);
             handleOpenAlert();
-            setSelectStatus("accept");
+            setSelectStatus("aceptado");
           }}
         >
           Aceptar
@@ -67,7 +75,7 @@ const ReservationPage = () => {
           onClick={() => {
             setCurrentId(element.id);
             handleOpenAlert();
-            setSelectStatus("reject");
+            setSelectStatus("rechazado");
           }}
         >
           Rechazar
@@ -148,13 +156,13 @@ const ReservationPage = () => {
       </div>
       <DeleteModal
         name={
-          selectStatus === "accept"
+          selectStatus === "aceptado"
             ? "aceptar la reserva "
             : "rechazar la reserva"
         }
         open={showAlert}
         close={handleCloseAlert}
-        delete={handleStatus}
+        remove={handleStatus}
       />
     </div>
   );

@@ -1,23 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 
-import firebase from "firebase";
+import FireRequest from "../services/Request";
 import { db } from "../utils/firebase";
 
+import { AuthContext } from "../context/Auth";
+
 export const useReservation = (currentId) => {
+  const [authState] = useContext(AuthContext);
   const [reservations, setReservation] = useState([]);
   const [accepts, setAccepts] = useState([]);
   const [rejects, setRejects] = useState([]);
 
-  useEffect(() => {
-    getReservations();
-    getAcceptsR();
-    getRejectsR();
-  }, []);
-
   //Get list of reservations pending
   const getReservations = async () => {
     db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
+      .where("idRestaurant", "==", authState.user)
       .where("status", "==", "pendiente")
       .onSnapshot((querySnapshot) => {
         const state = [];
@@ -34,7 +31,7 @@ export const useReservation = (currentId) => {
   //Get list of reservation accepted
   const getAcceptsR = async () => {
     db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
+      .where("idRestaurant", "==", authState.user)
       .where("status", "==", "aceptado")
       .onSnapshot((querySnapshot) => {
         const state = [];
@@ -51,7 +48,7 @@ export const useReservation = (currentId) => {
   //Get list of reservation rejected
   const getRejectsR = async () => {
     db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
+      .where("idRestaurant", "==", authState.user)
       .where("status", "==", "rechazado")
       .onSnapshot((querySnapshot) => {
         const state = [];
@@ -66,16 +63,22 @@ export const useReservation = (currentId) => {
   };
 
   //Change reservation status
-  const editReservation = async (object) => {
-    await db
-      .collection("reservationDocument")
-      .doc(currentId)
-      .update(object)
+  const editReservation = (object) => {
+    FireRequest()
+      .updateService("reservationDocument", currentId, object)
       .then(() => console.log("Se actualizó correctamente al documento"))
       .catch((error) =>
         console.error("Hubo un error al actualizar en FireStore: ", error)
       );
   };
 
-  return { reservations, accepts, rejects, editReservation };
+  return {
+    reservations,
+    accepts,
+    rejects,
+    editReservation,
+    getReservations,
+    getAcceptsR,
+    getRejectsR,
+  };
 };
