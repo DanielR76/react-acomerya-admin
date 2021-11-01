@@ -197,9 +197,6 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
                 ) : (
                   <img className="image__dish" src={ImageLoad} alt="imagen 1" />
                 )}
-                {/* <input
-                                    type="file"
-                                    onChange={handleLoad.bind(this)} /> */}
                 <UploadButtons changeImg={handleLoad.bind(this)} />
               </div>
               <div className="modaldish__price">

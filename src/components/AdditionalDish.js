@@ -7,6 +7,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 import firebase from "firebase";
 import { db } from "../utils/firebase";
+import { useConvertValues } from "../hooks/useConvertValues";
 
 function AdditionalDish() {
   const [showAlert, setShowAlert] = useState(false);
@@ -15,6 +16,7 @@ function AdditionalDish() {
   const [currentId, setCurrentId] = useState("");
   const [currentIdForm, setCurrentIdForm] = useState("");
   const [formAddition, setFormAddition] = useState(false);
+  const { numberToCop } = useConvertValues();
 
   const initialStateValues = {
     idRestaurant: firebase.auth().currentUser.uid,
@@ -121,7 +123,7 @@ function AdditionalDish() {
           <div className="price">
             <img src={IconMoney} alt="icon" />
             <label className="container__add--price" key={`price ${val}`}>
-              {val.price}
+              {numberToCop(val.price)}
             </label>
           </div>
         </div>

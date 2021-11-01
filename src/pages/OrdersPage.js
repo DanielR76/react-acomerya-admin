@@ -3,6 +3,7 @@ import DeleteModal from "../components/DeleteModal";
 import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 
 import { useOrderService } from "../hooks/useOrderService";
+import { useConvertValues } from "../hooks/useConvertValues";
 
 const OrdersPage = () => {
   const [showAlert, setShowAlert] = useState(false);
@@ -10,6 +11,7 @@ const OrdersPage = () => {
   const [totalPrice, setTotalPrice] = useState("");
   const [currentOrder, setCurrentOrder] = useState("");
   const { requests, getRequest, edditOrder } = useOrderService(currentOrder);
+  const { numberToCop } = useConvertValues();
 
   useEffect(() => {
     getRequest();
@@ -78,7 +80,7 @@ const OrdersPage = () => {
             <div className="footer__amount">Cantidad: {e?.quantity}</div>
             <div className="footer__price">
               <img src={IconMoney} alt="icon" />
-              <div>{e?.priceAddition}</div>
+              <div>{numberToCop(e?.priceAddition)}</div>
             </div>
           </div>
         </div>
@@ -100,7 +102,7 @@ const OrdersPage = () => {
           <div className="request__paid">
             <div className="request__paid--money">
               <img src={IconMoney} alt="icon" />
-              <div>{totalPrice}</div>
+              <div>{numberToCop(totalPrice)}</div>
             </div>
             <button
               onClick={() => {
