@@ -1,68 +1,24 @@
 import React, { useState, useEffect } from "react";
 import DeleteModal from "../components/DeleteModal";
-import firebase from "firebase";
-import { db } from "../utils/firebase";
+import moment from "moment";
 
-function ReservationPage() {
+import { useReservationService } from "../hooks/useReservationService";
+
+const ReservationPage = () => {
   const [showAlert, setShowAlert] = useState(false);
   const handleOpenAlert = () => setShowAlert(true);
   const handleCloseAlert = (action) => setShowAlert(action);
   const [currentId, setCurrentId] = useState("");
   const [selectStatus, setSelectStatus] = useState("");
-
-  //Obtener lista de reservas pending
-  const [reservations, setReservation] = useState([]);
-  const getReservations = async () => {
-    db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "pendiente")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setReservation(state);
-      });
-  };
-
-  //Obtener lista de reservas accept
-  const [accepts, setAccepts] = useState([]);
-  const getAcceptsR = async () => {
-    db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "aceptado")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setAccepts(state);
-      });
-  };
-
-  //Obtener lista de reservas reject
-  const [rejects, setRejects] = useState([]);
-  const getRejectsR = async () => {
-    db.collection("reservationDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
-      .where("status", "==", "rechazado")
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-        setRejects(state);
-      });
-  };
+  const {
+    reservations,
+    accepts,
+    rejects,
+    editReservation,
+    getReservations,
+    getAcceptsR,
+    getRejectsR,
+  } = useReservationService(currentId);
 
   useEffect(() => {
     getReservations();
@@ -70,40 +26,17 @@ function ReservationPage() {
     getRejectsR();
   }, []);
 
-  //Cambiar estado de una reserva en BD
-  const editReservation = async (object) => {
-    await db
-      .collection("reservationDocument")
-      .doc(currentId)
-      .update(object)
-      .then(() => console.log("Se actualizó correctamente al documento"))
-      .catch((error) =>
-        console.error("Hubo un error al actualizar en FireStore: ", error)
-      );
-  };
-
-  //Cambiar estado de reserva seleccionada
+  //Change reservation status
   const handleStatus = () => {
     setShowAlert(false);
-    switch (selectStatus) {
-      case "accept":
-        editReservation({ status: "aceptado" });
-        break;
-      case "reject":
-        editReservation({ status: "rechazado" });
-        break;
-      default:
-        break;
-    }
+    editReservation({ status: selectStatus });
     setSelectStatus("");
     setCurrentId("");
   };
 
-  const requestPending = reservations.map((element) => {
-    let datePending = new Date(element.date.toMillis());
-    let reservationDate = `${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getHours()}:${datePending.getMinutes()}`;
-    return (
-      <div className="card__reservation" key={element}>
+  const RequestPending = () =>
+    reservations.map((element, index) => (
+      <div className="card__reservation" key={index}>
         <div className="card__reservation--header">
           <label>{element.requestNumber} </label>
         </div>
@@ -114,7 +47,9 @@ function ReservationPage() {
           </div>
           <div className="reservation__date">
             <label className="reservation__firts">Fecha: </label>
-            <label className="reservation__second">{reservationDate}</label>
+            <label className="reservation__second">
+              {moment(element.date.toMillis()).format("LLL")}
+            </label>
           </div>
           <div className="reservation__amount">
             <label className="reservation__firts">Cantidad: </label>
@@ -131,7 +66,7 @@ function ReservationPage() {
             onClick={() => {
               setCurrentId(element.id);
               handleOpenAlert();
-              setSelectStatus("accept");
+              setSelectStatus("aceptado");
             }}
           >
             Aceptar
@@ -141,21 +76,18 @@ function ReservationPage() {
             onClick={() => {
               setCurrentId(element.id);
               handleOpenAlert();
-              setSelectStatus("reject");
+              setSelectStatus("rechazado");
             }}
           >
             Rechazar
           </button>
         </div>
       </div>
-    );
-  });
+    ));
 
-  const requestAccept = accepts.map((element) => {
-    let dateAccept = new Date(element.date.toMillis());
-    let reservationDate = `${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getHours()}:${dateAccept.getMinutes()}`;
-    return (
-      <div className="card__reservation">
+  const RequestAccept = () =>
+    accepts.map((element, index) => (
+      <div className="card__reservation" key={index}>
         <div className="card__reservation--header--accept">
           <label>{element.requestNumber} </label>
         </div>
@@ -166,7 +98,9 @@ function ReservationPage() {
           </div>
           <div className="reservation__date">
             <label className="reservation__firts">Fecha: </label>
-            <label className="reservation__second">{reservationDate}</label>
+            <label className="reservation__second">
+              {moment(element.date.toMillis()).format("LLL")}
+            </label>
           </div>
           <div className="reservation__amount">
             <label className="reservation__firts">Cantidad: </label>
@@ -178,13 +112,11 @@ function ReservationPage() {
           </div>
         </div>
       </div>
-    );
-  });
+    ));
 
-  const requestReject = rejects.map((element) => {
-    let dateReject = new Date(element.date.toMillis());
-    return (
-      <div className="card__reservation">
+  const RequestReject = () =>
+    rejects.map((element, index) => (
+      <div className="card__reservation" key={index}>
         <div className="card__reservation--header--reject">
           <label> {element.requestNumber} </label>
         </div>
@@ -195,7 +127,9 @@ function ReservationPage() {
           </div>
           <div className="reservation__date">
             <label className="reservation__firts">Fecha: </label>
-            <label className="reservation__second">{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getHours()}:${dateReject.getMinutes()}`}</label>
+            <label className="reservation__second">
+              {moment(element.date.toMillis()).format("LLL")}
+            </label>
           </div>
           <div className="reservation__amount">
             <label className="reservation__firts">Cantidad: </label>
@@ -207,35 +141,34 @@ function ReservationPage() {
           </div>
         </div>
       </div>
-    );
-  });
+    ));
 
   return (
     <div className="container__reservation">
       <div className="reservation__waiting">
         <h6 className="reservation__tittle">Pendientes</h6>
-        {requestPending}
+        <RequestPending />
       </div>
       <div className="reservation__accept">
         <h6 className="reservation__tittle">Aprobadas</h6>
-        {requestAccept}
+        <RequestAccept />
       </div>
       <div className="reservation__reject">
         <h6 className="reservation__tittle">Rechazadas</h6>
-        {requestReject}
+        <RequestReject />
       </div>
       <DeleteModal
         name={
-          selectStatus === "accept"
+          selectStatus === "aceptado"
             ? "aceptar la reserva "
             : "rechazar la reserva"
         }
         open={showAlert}
         close={handleCloseAlert}
-        delete={handleStatus}
+        remove={handleStatus}
       />
     </div>
   );
-}
+};
 
 export default ReservationPage;

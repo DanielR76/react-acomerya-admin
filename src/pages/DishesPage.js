@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import ModalDish from "../components/ModalDish";
 import AdditionalDish from "../components/AdditionalDish";
@@ -13,9 +13,14 @@ function DishesPage() {
   const [currentDish, setCurrentDish] = useState("");
   const [visibleModalDish, setVisibleModalDish] = useState(false);
   const [visibleAlert, setVisibleAlert] = useState(false);
-  const { listOfDishes, addDish, editDish, deleteDish } = useDishesServices();
+  const { listOfDishes, getDishes, addDish, editDish, deleteDish } =
+    useDishesServices();
 
-  //estructura de cards de platos
+  useEffect(() => {
+    getDishes();
+  }, []);
+
+  //Estructure card dishes
   const DishesCard = listOfDishes?.data.map((todo, i) => (
     <div className="card__dish__cont" key={todo.id}>
       <img className="card__dish--image" src={todo.imagePath} alt="imageDish" />
@@ -59,7 +64,6 @@ function DishesPage() {
               <Add />
             </IconButton>
           </div>
-
           <div className="card__dish">{DishesCard}</div>
         </div>
         <ModalDish

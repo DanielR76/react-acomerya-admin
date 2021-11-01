@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 
-import firebase from "firebase";
 import FireRequest from "../services/Request";
+import { AuthContext } from "../context/Auth";
 
 const initialArray = {
   data: [],
@@ -9,21 +9,14 @@ const initialArray = {
 };
 
 export const useDishesServices = () => {
+  const [authState] = useContext(AuthContext);
   const [listOfDishes, setListOfDishes] = useState({ ...initialArray });
-
-  useEffect(() => {
-    getDishes();
-  }, []);
 
   //Get all dishes and set state
   const getDishes = () => {
     setListOfDishes({ ...listOfDishes, loading: true });
     FireRequest()
-      .getServiceCondition(
-        "dishDocument",
-        "idRestaurant",
-        firebase.auth().currentUser.uid
-      )
+      .getServiceCondition("dishDocument", "idRestaurant", authState.user)
       .then((response) => {
         const state = [];
         response.forEach((doc) => {
@@ -68,7 +61,7 @@ export const useDishesServices = () => {
     getDishes();
   };
 
-  //Delete dish
+  //Delete selected dish
   const deleteDish = (currentDish) => {
     FireRequest()
       .deleteService("dishDocument", currentDish)
@@ -83,6 +76,7 @@ export const useDishesServices = () => {
 
   return {
     listOfDishes,
+    getDishes,
     addDish,
     editDish,
     deleteDish,
