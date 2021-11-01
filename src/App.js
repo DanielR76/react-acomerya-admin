@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./context/Auth";
-import PrivateRoute from "./context/PrivateRoute";
 import AuthenticationPage from "./pages/AuthenticationPage";
 import AdminLayout from "./layouts/AdminLayout";
 import ProfilePage from "./pages/ProfilePage";
@@ -19,18 +18,10 @@ function App() {
           <Route exact path="/login" component={AuthenticationPage} />
           {/* <Route component={NotFound} /> */}
           <AdminLayout>
-            <section className="section">
-              <div className="section__container">
-                <PrivateRoute exact path="/profile" component={ProfilePage} />
-                <PrivateRoute exact path="/dishes" component={DishesPage} />
-                <PrivateRoute exact path="/orders" component={OrdersPage} />
-                <PrivateRoute
-                  exact
-                  path="/reservation"
-                  component={ReservationPage}
-                />
-              </div>
-            </section>
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/dishes" component={DishesPage} />
+            <Route exact path="/orders" component={OrdersPage} />
+            <Route exact path="/reservation" component={ReservationPage} />
           </AdminLayout>
         </Switch>
       </Router>
