@@ -5,7 +5,7 @@ import { db } from "../utils/firebase";
 
 import { AuthContext } from "../context/Auth";
 
-export const useReservation = (currentId) => {
+export const useReservationService = (currentId) => {
   const [authState] = useContext(AuthContext);
   const [reservations, setReservation] = useState([]);
   const [accepts, setAccepts] = useState([]);
