@@ -1,20 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 
 import FireRequest from "../services/Request";
-import firebase from "firebase";
 import { db } from "../utils/firebase";
 
-export const useOrderService = (currentOrder) => {
-  const [requests, setRequests] = useState([]);
+import { AuthContext } from "../context/Auth";
 
-  useEffect(() => {
-    getRequest();
-  }, []);
+export const useOrderService = (currentOrder) => {
+  const [authState] = useContext(AuthContext);
+  const [requests, setRequests] = useState([]);
 
   //Get list of pending reservations
   const getRequest = async () => {
     db.collection("requestsDocument")
-      .where("idRestaurant", "==", firebase.auth().currentUser.uid)
+      .where("idRestaurant", "==", authState.user)
       .where("status", "==", "active")
       .onSnapshot((querySnapshot) => {
         const state = [];
@@ -38,5 +36,5 @@ export const useOrderService = (currentOrder) => {
       );
   };
 
-  return { requests, edditOrder };
+  return { requests, getRequest, edditOrder };
 };

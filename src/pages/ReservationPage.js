@@ -35,8 +35,8 @@ const ReservationPage = () => {
   };
 
   const RequestPending = () =>
-    reservations.map((element) => (
-      <div className="card__reservation" key={element}>
+    reservations.map((element, index) => (
+      <div className="card__reservation" key={index}>
         <div className="card__reservation--header">
           <label>{element.requestNumber} </label>
         </div>
@@ -86,8 +86,8 @@ const ReservationPage = () => {
     ));
 
   const RequestAccept = () =>
-    accepts.map((element) => (
-      <div className="card__reservation">
+    accepts.map((element, index) => (
+      <div className="card__reservation" key={index}>
         <div className="card__reservation--header--accept">
           <label>{element.requestNumber} </label>
         </div>
@@ -115,8 +115,8 @@ const ReservationPage = () => {
     ));
 
   const RequestReject = () =>
-    rejects.map((element) => (
-      <div className="card__reservation">
+    rejects.map((element, index) => (
+      <div className="card__reservation" key={index}>
         <div className="card__reservation--header--reject">
           <label> {element.requestNumber} </label>
         </div>

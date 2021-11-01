@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { UploadButtons } from "../components/MaterialUI";
 import CodesRestaurant from "../components/CodesRestaurant";
@@ -13,10 +13,15 @@ const ProfilePage = () => {
     restaurant,
     images,
     handleLoad,
+    getRestaurant,
     editRestaurant,
     setImages,
     setRestaurant,
   } = useRestaurantService();
+
+  useEffect(() => {
+    getRestaurant();
+  }, []);
 
   const handleSubmit = () => {
     editRestaurant();
@@ -29,8 +34,8 @@ const ProfilePage = () => {
     setRestaurant({ ...restaurant, imagePath: test });
   };
 
-  const dataImage = images.map((element, index) => {
-    return (
+  const DataImage = () =>
+    images.map((element, index) => (
       <div className="card__container" key={index}>
         <IconButton
           className="delete__img"
@@ -45,8 +50,7 @@ const ProfilePage = () => {
           alt="imagenes del restaurante"
         />
       </div>
-    );
-  });
+    ));
 
   return (
     <div className="profile__main">
@@ -55,7 +59,9 @@ const ProfilePage = () => {
       </div>
       <div className="cards">
         <h6 className="tittle__image"> Fotografias de mi restaurante</h6>
-        <div className="image__card">{dataImage}</div>
+        <div className="image__card">
+          <DataImage />
+        </div>
         <UploadButtons changeImg={handleLoad.bind(this)} />
         <div className="save__image">
           <button className="login__form--submit" onClick={handleSubmit}>

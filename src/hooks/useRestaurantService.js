@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import firebase from "firebase";
+import { useState, useContext } from "react";
+
 import { db, storage } from "../utils/firebase";
 import FireRequest from "../services/Request";
 
@@ -9,10 +9,6 @@ export const useRestaurantService = () => {
   const [authState] = useContext(AuthContext);
   const [restaurant, setRestaurant] = useState("");
   const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    if (authState?.user) getRestaurant();
-  }, [authState]);
 
   //Check existence of restaurant & redirect
   const getRestaurantById = (history, id) => {
@@ -32,7 +28,7 @@ export const useRestaurantService = () => {
   const getRestaurant = async () => {
     await db
       .collection("restaurantsDocument")
-      .where("idUser", "==", firebase.auth().currentUser.uid)
+      .where("idUser", "==", authState.user)
       .onSnapshot((querySnapshot) => {
         let state = "";
         querySnapshot.forEach((doc) => {
@@ -91,6 +87,7 @@ export const useRestaurantService = () => {
     images,
     setImages,
     getRestaurantById,
+    getRestaurant,
     editRestaurant,
     handleLoad,
   };

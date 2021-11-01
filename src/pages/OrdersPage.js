@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteModal from "../components/DeleteModal";
 import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 
@@ -9,7 +9,11 @@ const OrdersPage = () => {
   const [requestDish, setRequestDish] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
   const [currentOrder, setCurrentOrder] = useState("");
-  const { requests, edditOrder } = useOrderService(currentOrder);
+  const { requests, getRequest, edditOrder } = useOrderService(currentOrder);
+
+  useEffect(() => {
+    getRequest();
+  }, []);
 
   const handleCloseAlert = (action) => setShowAlert(action);
 
@@ -23,8 +27,8 @@ const OrdersPage = () => {
     setCurrentOrder("");
   };
 
-  const dishesTable = requests.map((element, index) => {
-    return (
+  const DishesTable = () =>
+    requests.map((element, index) => (
       <div className="orders__table" key={element + index}>
         <button
           className="orders__table--button"
@@ -37,10 +41,9 @@ const OrdersPage = () => {
           {element.table}
         </button>
       </div>
-    );
-  });
+    ));
 
-  const dishesContain = () => {
+  const DishesContain = () => {
     if (requestDish !== "") {
       return requestDish?.dishes.map((e, index) => {
         return (
@@ -91,7 +94,9 @@ const OrdersPage = () => {
     <div className="container__orders">
       <div className="request">
         <div className="orders">
-          <div className="request__orders">{dishesTable}</div>
+          <div className="request__orders">
+            <DishesTable />
+          </div>
         </div>
         {currentOrder && (
           <div className="request__paid">
@@ -110,7 +115,9 @@ const OrdersPage = () => {
         )}
       </div>
       <div className="container__orders--dishes">
-        <div className="request__dishes">{dishesContain()}</div>
+        <div className="request__dishes">
+          <DishesContain />
+        </div>
       </div>
       <DeleteModal
         name={"marcar el pedido como pagado"}
