@@ -1,35 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import SideBar from '../components/SideBar'
-import firebase from 'firebase'
-import { db } from '../utils/firebase'
+import React, { useState, useEffect } from "react";
 
-function AdminLayout(props) {
+import SideBar from "../components/SideBar";
+import { useRestaurantService } from "../hooks/useRestaurantService";
 
-    //Obtener imagen por id del usuario
-    const [image, setImage] = useState('')
-    const getDishes = async () => {
-        db.collection("restaurantsDocument").where("idUser", "==", firebase.auth().currentUser.uid)
-            .onSnapshot(querySnapshot => {
-                const imageFirts = []
-                querySnapshot.forEach((doc) => {
-                    imageFirts.push(doc.data().nameRestaurant, doc.data().imagePath[0])
-                })
-                setImage(imageFirts)
-            })
-    }
-    useEffect(() => {
-        if (firebase.auth().currentUser !== null) {
-            getDishes()
-        }
+function AdminLayout({ children }) {
+  const { image, getResume } = useRestaurantService();
+  useEffect(() => {
+    getResume();
+  }, []);
 
-    }, [])
-
-    return (
-        <React.Fragment>
-            <SideBar data={image} />
-            {props.children}
-        </React.Fragment>
-    )
+  return (
+    <React.Fragment>
+      <SideBar data={image} />
+      {children}
+    </React.Fragment>
+  );
 }
 
-export default AdminLayout
+export default AdminLayout;

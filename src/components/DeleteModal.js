@@ -7,7 +7,7 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 
-function DeleteModal({ name, open, close, remove }) {
+function DeleteModal({ name, open = false, close, remove }) {
   return (
     <div>
       <Dialog
