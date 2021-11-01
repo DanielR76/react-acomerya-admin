@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DeleteModal from "../components/DeleteModal";
+import moment from "moment";
 
 import { useReservation } from "../hooks/useReservation";
 
@@ -12,133 +13,124 @@ const ReservationPage = () => {
   const { reservations, accepts, rejects, editReservation } =
     useReservation(currentId);
 
-  //Cambiar estado de reserva seleccionada
+  const statusReservation = {
+    accept: "aceptado",
+    reject: "rechazado",
+  };
+
+  //Change reservation status
   const handleStatus = () => {
     setShowAlert(false);
-    switch (selectStatus) {
-      case "accept":
-        editReservation({ status: "aceptado" });
-        break;
-      case "reject":
-        editReservation({ status: "rechazado" });
-        break;
-      default:
-        break;
-    }
+    editReservation({ status: selectStatus[statusReservation] || "" });
     setSelectStatus("");
     setCurrentId("");
   };
 
-  const requestPending = reservations.map((element) => {
-    let datePending = new Date(element.date.toMillis());
-    let reservationDate = `${datePending.getDate()}/${datePending.getMonth()}/${datePending.getFullYear()} ${datePending.getHours()}:${datePending.getMinutes()}`;
-    return (
-      <div className="card__reservation" key={element}>
-        <div className="card__reservation--header">
-          <label>{element.requestNumber} </label>
+  const requestPending = reservations.map((element) => (
+    <div className="card__reservation" key={element}>
+      <div className="card__reservation--header">
+        <label>{element.requestNumber} </label>
+      </div>
+      <div className="card__reservation--body">
+        <div className="reservation__name">
+          <label className="reservation__firts">Nombre: </label>
+          <label className="reservation__second">{element.name}</label>
         </div>
-        <div className="card__reservation--body">
-          <div className="reservation__name">
-            <label className="reservation__firts">Nombre: </label>
-            <label className="reservation__second">{element.name}</label>
-          </div>
-          <div className="reservation__date">
-            <label className="reservation__firts">Fecha: </label>
-            <label className="reservation__second">{reservationDate}</label>
-          </div>
-          <div className="reservation__amount">
-            <label className="reservation__firts">Cantidad: </label>
-            <label className="reservation__second">{element.quantity}</label>
-          </div>
-          <div className="reservation__description">
-            <label className="reservation__firts">Descripcion: </label>
-            <label className="reservation__second">{element.summary}</label>
-          </div>
+        <div className="reservation__date">
+          <label className="reservation__firts">Fecha: </label>
+          <label className="reservation__second">
+            {moment(element.date.toMillis()).format("LLL")}
+          </label>
         </div>
-        <div className="card__reservation--footer">
-          <button
-            className="accept"
-            onClick={() => {
-              setCurrentId(element.id);
-              handleOpenAlert();
-              setSelectStatus("accept");
-            }}
-          >
-            Aceptar
-          </button>
-          <button
-            className="reject"
-            onClick={() => {
-              setCurrentId(element.id);
-              handleOpenAlert();
-              setSelectStatus("reject");
-            }}
-          >
-            Rechazar
-          </button>
+        <div className="reservation__amount">
+          <label className="reservation__firts">Cantidad: </label>
+          <label className="reservation__second">{element.quantity}</label>
+        </div>
+        <div className="reservation__description">
+          <label className="reservation__firts">Descripcion: </label>
+          <label className="reservation__second">{element.summary}</label>
         </div>
       </div>
-    );
-  });
+      <div className="card__reservation--footer">
+        <button
+          className="accept"
+          onClick={() => {
+            setCurrentId(element.id);
+            handleOpenAlert();
+            setSelectStatus("accept");
+          }}
+        >
+          Aceptar
+        </button>
+        <button
+          className="reject"
+          onClick={() => {
+            setCurrentId(element.id);
+            handleOpenAlert();
+            setSelectStatus("reject");
+          }}
+        >
+          Rechazar
+        </button>
+      </div>
+    </div>
+  ));
 
-  const requestAccept = accepts.map((element) => {
-    let dateAccept = new Date(element.date.toMillis());
-    let reservationDate = `${dateAccept.getDate()}/${dateAccept.getMonth()}/${dateAccept.getFullYear()} ${dateAccept.getHours()}:${dateAccept.getMinutes()}`;
-    return (
-      <div className="card__reservation">
-        <div className="card__reservation--header--accept">
-          <label>{element.requestNumber} </label>
+  const requestAccept = accepts.map((element) => (
+    <div className="card__reservation">
+      <div className="card__reservation--header--accept">
+        <label>{element.requestNumber} </label>
+      </div>
+      <div className="card__reservation--body">
+        <div className="reservation__name">
+          <label className="reservation__firts">Nombre: </label>
+          <label className="reservation__second">{element.name}</label>
         </div>
-        <div className="card__reservation--body">
-          <div className="reservation__name">
-            <label className="reservation__firts">Nombre: </label>
-            <label className="reservation__second">{element.name}</label>
-          </div>
-          <div className="reservation__date">
-            <label className="reservation__firts">Fecha: </label>
-            <label className="reservation__second">{reservationDate}</label>
-          </div>
-          <div className="reservation__amount">
-            <label className="reservation__firts">Cantidad: </label>
-            <label className="reservation__second">{element.quantity}</label>
-          </div>
-          <div className="reservation__description">
-            <label className="reservation__firts">Descripcion: </label>
-            <label className="reservation__second">{element.summary}</label>
-          </div>
+        <div className="reservation__date">
+          <label className="reservation__firts">Fecha: </label>
+          <label className="reservation__second">
+            {moment(element.date.toMillis()).format("LLL")}
+          </label>
+        </div>
+        <div className="reservation__amount">
+          <label className="reservation__firts">Cantidad: </label>
+          <label className="reservation__second">{element.quantity}</label>
+        </div>
+        <div className="reservation__description">
+          <label className="reservation__firts">Descripcion: </label>
+          <label className="reservation__second">{element.summary}</label>
         </div>
       </div>
-    );
-  });
+    </div>
+  ));
 
-  const requestReject = rejects.map((element) => {
-    let dateReject = new Date(element.date.toMillis());
-    return (
-      <div className="card__reservation">
-        <div className="card__reservation--header--reject">
-          <label> {element.requestNumber} </label>
+  const requestReject = rejects.map((element) => (
+    <div className="card__reservation">
+      <div className="card__reservation--header--reject">
+        <label> {element.requestNumber} </label>
+      </div>
+      <div className="card__reservation--body">
+        <div className="reservation__name">
+          <label className="reservation__firts">Nombre: </label>
+          <label className="reservation__second">{element.name}</label>
         </div>
-        <div className="card__reservation--body">
-          <div className="reservation__name">
-            <label className="reservation__firts">Nombre: </label>
-            <label className="reservation__second">{element.name}</label>
-          </div>
-          <div className="reservation__date">
-            <label className="reservation__firts">Fecha: </label>
-            <label className="reservation__second">{`${dateReject.getDate()}/${dateReject.getMonth()}/${dateReject.getFullYear()} ${dateReject.getHours()}:${dateReject.getMinutes()}`}</label>
-          </div>
-          <div className="reservation__amount">
-            <label className="reservation__firts">Cantidad: </label>
-            <label className="reservation__second">{element.quantity}</label>
-          </div>
-          <div className="reservation__description">
-            <label className="reservation__firts">Descripcion: </label>
-            <label className="reservation__second">{element.summary}</label>
-          </div>
+        <div className="reservation__date">
+          <label className="reservation__firts">Fecha: </label>
+          <label className="reservation__second">
+            {moment(element.date.toMillis()).format("LLL")}
+          </label>
+        </div>
+        <div className="reservation__amount">
+          <label className="reservation__firts">Cantidad: </label>
+          <label className="reservation__second">{element.quantity}</label>
+        </div>
+        <div className="reservation__description">
+          <label className="reservation__firts">Descripcion: </label>
+          <label className="reservation__second">{element.summary}</label>
         </div>
       </div>
-    );
-  });
+    </div>
+  ));
 
   return (
     <div className="container__reservation">
