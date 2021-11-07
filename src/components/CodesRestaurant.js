@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { TextField, IconButton } from "@mui/material";
 import { RemoveCircleOutline } from "@mui/icons-material";
 
-import DeleteModal from "./DeleteModal";
+import AlertModal from "./AlertModal";
 import { AuthContext } from "../context/Auth";
 
 import { useCodesService } from "../hooks/useCodesService";
@@ -18,9 +18,9 @@ const CodesRestaurant = () => {
     code: "",
   };
   const [newCode, setNewCode] = useState({ ...initialState });
+  const { codes, getListOfCodes, createCode, deleteCode } = useCodesService();
   const isValidForm =
     newCode.table !== "" && newCode.code !== "" ? true : false;
-  const { codes, getListOfCodes, createCode, deleteCode } = useCodesService();
 
   useEffect(() => {
     getListOfCodes();
@@ -104,7 +104,7 @@ const CodesRestaurant = () => {
           {isValidForm ? "Guardar" : "Generar código"}
         </button>
       </div>
-      <DeleteModal
+      <AlertModal
         name={"eliminar el código y la mesa"}
         open={showAlert}
         close={handleCloseAlert}

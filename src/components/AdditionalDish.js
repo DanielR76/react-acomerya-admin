@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-import { Edit, Delete } from "@mui/icons-material";
-import { TextField, IconButton } from "@mui/material";
+import { Edit, RemoveCircleOutline } from "@mui/icons-material";
+import { TextField, Button, IconButton } from "@mui/material";
 
-import DeleteModal from "../components/DeleteModal";
+import AlertModal from "../components/AlertModal";
 import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 
 import { useAditionalDishService } from "../hooks/useAditionalDishService";
 import { useConvertValues } from "../hooks/useConvertValues";
 
-function AdditionalDish() {
+const AdditionalDish = () => {
   const [showAlert, setShowAlert] = useState(false);
-  const [currentId, setCurrentId] = useState("");
-  const [currentIdForm, setCurrentIdForm] = useState("");
-  const [formAddition, setFormAddition] = useState(false);
+  const [editDish, setEditDish] = useState("");
+  const [deleteDish, setDeleteDish] = useState("");
   const { numberToCop } = useConvertValues();
   const {
     additionalValue,
@@ -30,9 +29,13 @@ function AdditionalDish() {
     getAdditional();
   }, []);
 
-  const handleOpenAlert = () => setShowAlert(true);
+  const handleConfirmAlert = () => {
+    setShowAlert(false);
+    deleteAddition(deleteDish);
+    setDeleteDish("");
+  };
 
-  const handleCloseAlert = (action) => setShowAlert(action);
+  const handleCloseAlert = () => setShowAlert(false);
 
   //Save state values
   const handleChange = (e) => {
@@ -45,20 +48,20 @@ function AdditionalDish() {
   //Create o edit aditional
   const handleSubmit = (e) => {
     e.preventDefault();
-    !currentIdForm ? addAditional() : editAditional(currentIdForm);
-    setCurrentIdForm("");
-    setFormAddition(false);
+    if (additionalValue?.price !== "" && additionalValue?.name !== "") {
+      console.log("imprimeeeee");
+      !editDish ? addAditional() : editAditional(editDish);
+    }
+    setEditDish("");
   };
 
   //List of aditions
   const AditionalsCard = () =>
-    listOfAdditions.map((val) => (
-      <div className="container__add--aditions--values" key={val}>
+    listOfAdditions.map((val, index) => (
+      <div className="container__add--aditions--values" key={index}>
         <div className="container__add--aditions--form">
           <div>
-            <label className="container__add--addition" key={`name ${val}`}>
-              {val.name}
-            </label>
+            <label className="container__add--addition">{val.name}</label>
           </div>
           <div className="price">
             <img src={IconMoney} alt="icon" />
@@ -71,85 +74,67 @@ function AdditionalDish() {
           <IconButton
             aria-label="editar"
             onClick={() => {
-              setCurrentIdForm(val.id);
+              setEditDish(val.id);
               getAdditionById(val.id);
             }}
           >
-            <Edit size="small" color="primary" />
+            <Edit size="small" color="warning" />
           </IconButton>
           <IconButton
             aria-label="eliminar"
             onClick={() => {
-              setCurrentId(val.id);
-              handleOpenAlert();
+              setDeleteDish(val.id);
+              setShowAlert(true);
             }}
           >
-            <Delete size="small" color="secondary" />
+            <RemoveCircleOutline size="small" color="action" />
           </IconButton>
         </div>
       </div>
     ));
 
   return (
-    <div className="container__form" key="1">
+    <div className="container__form" key="createEdit">
       <AditionalsCard />
-      {currentIdForm || formAddition ? (
-        <form
-          className="form"
-          onSubmit={
-            additionalValue.price !== "" && additionalValue.name !== ""
-              ? handleSubmit
-              : null
-          }
-        >
-          <div className="form__add-edit">
-            <div className="form__addition">
-              <TextField
-                id="standard-basic"
-                label="nombre"
-                name="name"
-                value={additionalValue.name}
-                onChange={handleChange}
-                fullWidth="true"
-                required="true"
-              />
-            </div>
-            <div className="form__addition">
-              <TextField
-                id="standard-basic"
-                label="Precio"
-                name="price"
-                value={additionalValue.price}
-                onChange={handleChange}
-                fullWidth="true"
-                required="true"
-              />
-            </div>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="form__add-edit">
+          <div className="form__addition">
+            <TextField
+              id="standard-basic"
+              label="nombre"
+              name="name"
+              value={additionalValue?.name}
+              onChange={handleChange}
+              variant="standard"
+              fullWidth="true"
+              required="true"
+            />
           </div>
-          <button className="login__form--submit" type="submit">
-            {currentIdForm ? "Guardar" : "Agregar"}
-          </button>
-        </form>
-      ) : (
-        <button
-          className="login__form--submit"
-          onClick={() => setFormAddition(true)}
-        >
-          Adicionar
-        </button>
-      )}
-      <DeleteModal
+          <div className="form__addition">
+            <TextField
+              id="standard-basic"
+              label="Precio"
+              name="price"
+              value={additionalValue?.price}
+              onChange={handleChange}
+              variant="standard"
+              fullWidth="true"
+              required="true"
+            />
+          </div>
+        </div>
+        <Button variant="contained" color="warning" type="submit">
+          {editDish ? "Actualizar" : "Agregar"}
+        </Button>
+      </form>
+      <AlertModal
         name={"eliminar la adición del menú"}
         open={showAlert}
-        close={handleCloseAlert}
-        remove={() => {
-          setShowAlert(false);
-          deleteAddition(currentId);
-          setCurrentId("");
-        }}
+        handleCloseAlert={handleCloseAlert}
+        handleConfirmAlert={handleConfirmAlert}
       />
     </div>
   );
-}
+};
 
 export default AdditionalDish;

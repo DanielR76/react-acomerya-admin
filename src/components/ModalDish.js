@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal } from "react-bootstrap";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -10,14 +10,15 @@ import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 import { UploadButtons } from "../components/MaterialUI";
 import ImageLoad from "../assets/img/upload_image.png";
 import { db, storage } from "../utils/firebase";
-import firebase from "firebase";
+import { AuthContext } from "../context/Auth";
 
 function ModalDish({ show, close, addOrEdit, idDish }) {
+  const [authState] = useContext(AuthContext);
   const [inputList, setInputList] = useState([]);
 
   //Inicializar estado
   const initialStateValues = {
-    idRestaurant: firebase.auth().currentUser.uid,
+    idRestaurant: authState.user,
     imagePath: null,
     dishName: "",
     description: "",

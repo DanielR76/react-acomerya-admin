@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DeleteModal from "../components/DeleteModal";
+import AlertModal from "../components/AlertModal";
 import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 
 import { useOrderService } from "../hooks/useOrderService";
@@ -119,7 +119,7 @@ const OrdersPage = () => {
           <DishesContain />
         </div>
       </div>
-      <DeleteModal
+      <AlertModal
         name={"marcar el pedido como pagado"}
         open={currentOrder ? showAlert : false}
         close={handleCloseAlert}

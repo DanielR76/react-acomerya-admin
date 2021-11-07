@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import DeleteModal from "../components/DeleteModal";
+import AlertModal from "../components/AlertModal";
 import ReservationCard from "../components/ReservationCard";
 
 import { useReservationService } from "../hooks/useReservationService";
@@ -67,7 +67,7 @@ const ReservationPage = () => {
           <ReservationCard element={element} index={index} type="reject" />
         ))}
       </div>
-      <DeleteModal
+      <AlertModal
         name={
           reservation.status === "aceptado"
             ? "aceptar la reserva "

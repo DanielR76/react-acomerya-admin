@@ -5,14 +5,15 @@ import { AuthContext } from "../context/Auth";
 
 export const useAditionalDishService = () => {
   const [authState] = useContext(AuthContext);
-  const [additionalValue, setAdditionalValue] = useState({});
   const [listOfAdditions, setListOfAditions] = useState([]);
-
   const initialStateValues = {
     idRestaurant: authState.user,
     name: "",
     price: "",
   };
+  const [additionalValue, setAdditionalValue] = useState({
+    ...initialStateValues,
+  });
 
   //Get aditionals food
   const getAdditional = () => {
