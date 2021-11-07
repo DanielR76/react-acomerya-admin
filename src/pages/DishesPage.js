@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import ModalDish from "../components/ModalDish";
 import AdditionalDish from "../components/AdditionalDish";
-import DeleteModal from "../components/DeleteModal";
+import AlertModal from "../components/AlertModal";
 
 import { useDishesServices } from "../hooks/useDishesServices";
 
@@ -79,7 +79,7 @@ function DishesPage() {
             }, 0);
           }}
         />
-        <DeleteModal
+        <AlertModal
           name={"eliminar el plato del menú"}
           open={visibleAlert}
           close={setVisibleAlert}

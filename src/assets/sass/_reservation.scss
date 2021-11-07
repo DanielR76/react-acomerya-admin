@@ -8,7 +8,7 @@
     font-size: 20px;
   }
 
-  .reservation__waiting {
+  .reservation__status {
     width: 33%;
     height: 100vh;
     overflow-y: scroll;
@@ -16,15 +16,12 @@
     &::-webkit-scrollbar {
       display: none;
     }
-  }
 
-  .reservation__accept {
-    width: 33%;
-    height: 100vh;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
+    .card__reservation--header--pending {
+      color: aliceblue;
+      background-color: $color-orange-3;
+      text-align: center;
+      border-radius: 10px;
     }
 
     .card__reservation--header--accept {
@@ -32,16 +29,6 @@
       background-color: $color-green-1;
       text-align: center;
       border-radius: 10px;
-    }
-  }
-
-  .reservation__reject {
-    width: 33%;
-    height: 100vh;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
     }
 
     .card__reservation--header--reject {

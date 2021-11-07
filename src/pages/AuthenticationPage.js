@@ -52,7 +52,7 @@ function AuthenticationPage({ history }) {
     return true;
   };
 
-  const alertValidation = () => (
+  const AlertValidation = () => (
     <div>
       <Dialog
         open={showAlert}
@@ -106,7 +106,7 @@ function AuthenticationPage({ history }) {
           </button>
         </form>
       </div>
-      {alertValidation()}
+      <AlertValidation />
       <a className="link__freepik" href="https://www.freepik.es/">
         Foto de Comida creada por freepik
       </a>

@@ -10,6 +10,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "signin":
       return { ...state, ...action.payload };
+    case "reset":
+      return { ...initialState };
     default:
       return { ...initialState };
   }

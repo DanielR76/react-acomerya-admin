@@ -9,6 +9,7 @@ export const useRestaurantService = () => {
   const [authState] = useContext(AuthContext);
   const [restaurant, setRestaurant] = useState("");
   const [images, setImages] = useState([]);
+  const [image, setImage] = useState("");
 
   //Check existence of restaurant & redirect
   const getRestaurantById = (history, id) => {
@@ -21,6 +22,20 @@ export const useRestaurantService = () => {
       })
       .catch((error) => {
         console.log(`este es el error ${error}`);
+      });
+  };
+
+  //Get image by id
+  const getResume = async () => {
+    await db
+      .collection("restaurantsDocument")
+      .where("idUser", "==", authState.user)
+      .onSnapshot((querySnapshot) => {
+        const imageFirts = [];
+        querySnapshot.forEach((doc) => {
+          imageFirts.push(doc.data().nameRestaurant, doc.data().imagePath[0]);
+        });
+        setImage(imageFirts);
       });
   };
 
@@ -86,6 +101,8 @@ export const useRestaurantService = () => {
     setRestaurant,
     images,
     setImages,
+    image,
+    getResume,
     getRestaurantById,
     getRestaurant,
     editRestaurant,
