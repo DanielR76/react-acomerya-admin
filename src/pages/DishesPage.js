@@ -20,7 +20,14 @@ function DishesPage() {
     getDishes();
   }, []);
 
-  //Estructure card dishes
+  const handleConfirmAlert = () => {
+    setVisibleAlert(false);
+    deleteDish(currentDish);
+    setCurrentDish("");
+  };
+
+  const handleCloseAlert = () => setVisibleAlert(false);
+
   const DishesCard = listOfDishes?.data.map((todo, i) => (
     <div className="card__dish__cont" key={todo.id}>
       <img className="card__dish--image" src={todo.imagePath} alt="imageDish" />
@@ -82,12 +89,8 @@ function DishesPage() {
         <AlertModal
           name={"eliminar el plato del menú"}
           open={visibleAlert}
-          close={setVisibleAlert}
-          deleteDish={() => {
-            setVisibleAlert(false);
-            deleteDish(currentDish);
-            setCurrentDish("");
-          }}
+          handleCloseAlert={handleCloseAlert}
+          handleConfirmAlert={handleConfirmAlert}
         />
       </div>
       <div className="container__add">

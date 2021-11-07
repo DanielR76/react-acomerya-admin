@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Modal } from "react-bootstrap";
+import { Button } from "@mui/material";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import IconButton from "@material-ui/core/IconButton";
@@ -211,9 +212,10 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
                   required={true}
                 />
               </div>
-              <button
-                className="login__form--submit"
-                style={{ width: "200px" }}
+              <Button
+                variant="contained"
+                color="warning"
+                type="submit"
                 onClick={
                   values.dishName !== null &&
                   values.description !== null &&
@@ -224,7 +226,7 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
                 }
               >
                 {idDish === "" ? "Crear" : "Guardar"}
-              </button>
+              </Button>
             </div>
             <div className="modaldish__container-input">
               <TextField

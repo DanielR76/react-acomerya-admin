@@ -40,7 +40,7 @@ const ReservationPage = () => {
     setReservation({ ...initialState });
   };
 
-  const handleCloseAlert = (action) => setShowAlert(action);
+  const handleCloseAlert = () => setShowAlert(false);
 
   return (
     <div className="container__reservation">
@@ -74,8 +74,8 @@ const ReservationPage = () => {
             : "rechazar la reserva"
         }
         open={showAlert}
-        close={handleCloseAlert}
-        remove={handleConfirmAlert}
+        handleCloseAlert={handleCloseAlert}
+        handleConfirmAlert={handleConfirmAlert}
       />
     </div>
   );

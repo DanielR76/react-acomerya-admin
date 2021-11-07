@@ -122,8 +122,8 @@ const OrdersPage = () => {
       <AlertModal
         name={"marcar el pedido como pagado"}
         open={currentOrder ? showAlert : false}
-        close={handleCloseAlert}
-        remove={handlePaid}
+        handleCloseAlert={handleCloseAlert}
+        handleConfirmAlert={handlePaid}
       />
     </div>
   );
