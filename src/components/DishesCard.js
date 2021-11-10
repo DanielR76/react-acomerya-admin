@@ -15,7 +15,7 @@ const DishesCard = ({ data, handleEdit, handleRemove }) => {
           </IconButton>
           <IconButton
             aria-label="eliminar"
-            onClick={() => handleRemove(data.edit)}
+            onClick={() => handleRemove(data.id)}
           >
             <RemoveCircleOutline size="small" color="action" />
           </IconButton>

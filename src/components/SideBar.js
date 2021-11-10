@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 
 import { AuthContext } from "../context/Auth";
 
-function Sidebar({ data }) {
+const Sidebar = ({ data }) => {
   const [, authDispatch] = useContext(AuthContext);
   const sideBar = [
     {
@@ -72,6 +72,6 @@ function Sidebar({ data }) {
       </IconContext.Provider>
     </div>
   );
-}
+};
 
 export default Sidebar;

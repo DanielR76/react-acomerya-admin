@@ -1,174 +1,145 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
+
 import { Modal } from "react-bootstrap";
-import { Button } from "@mui/material";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import IconButton from "@material-ui/core/IconButton";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import AddIcon from "@material-ui/icons/Add";
-import Switch from "@material-ui/core/Switch";
-import IconMoney from "../assets/icon/iconos-moneda-01.svg";
+import {
+  Button,
+  TextField,
+  FormControlLabel,
+  IconButton,
+  Switch,
+} from "@mui/material";
+import { RemoveCircleOutline, Add } from "@material-ui/icons";
+
 import { UploadButtons } from "../components/MaterialUI";
+
+import { useDishesServices } from "../hooks/useDishesServices";
+
+import IconMoney from "../assets/icon/iconos-moneda-01.svg";
 import ImageLoad from "../assets/img/upload_image.png";
-import { db, storage } from "../utils/firebase";
-import { AuthContext } from "../context/Auth";
 
-function ModalDish({ show, close, addOrEdit, idDish }) {
-  const [authState] = useContext(AuthContext);
-  const [inputList, setInputList] = useState([]);
+const initialStateValues = {
+  idRestaurant: "",
+  imagePath: null,
+  dishName: "",
+  description: "",
+  ingredient: [""],
+  price: "",
+  status: true,
+};
 
-  //Inicializar estado
-  const initialStateValues = {
-    idRestaurant: authState.user,
-    imagePath: null,
-    dishName: "",
-    description: "",
-    ingredient: [""],
-    price: "",
-    status: true,
-  };
+const ModalDish = ({ idDish, addDish, editDish, show, close }) => {
+  const {
+    dishById,
+    setDishById,
+    listOfIngredients,
+    setListOfIngredients,
+    getDishById,
+    handleLoad,
+  } = useDishesServices();
 
-  const [values, setValues] = useState({ ...initialStateValues });
-
-  //Obtener plato por el id
-  const getDishById = async (id) => {
-    const doc = await db.collection("dishDocument").doc(id).get();
-    setValues({ ...doc.data() });
-    setInputList([...doc.data().ingredient]);
-  };
-
-  //Si hay id en el props mostrar datos
   useEffect(() => {
     if (idDish === "") {
-      setValues({ ...initialStateValues });
-      setInputList(initialStateValues.ingredient);
+      setDishById({ ...initialStateValues });
+      setListOfIngredients(initialStateValues.ingredient);
     } else {
       getDishById(idDish);
     }
   }, [idDish]);
 
-  //Guardar imagen en storage y luego traer la ruta
-  const handleLoad = (e) => {
-    const file = e.target.files[0];
-    const uploadImage = storage.ref(`images/${file.name}`);
-    const task = uploadImage.put(file);
-
-    task.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {
-        console.error(error.message);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(file.name)
-          .getDownloadURL()
-          .then((url) => setValues({ ...values, imagePath: url }));
-      }
-    );
-  };
-
-  //Guardar los datos en values
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValues({
-      ...values,
+    setDishById({
+      ...dishById,
       [name]: value,
     });
   };
 
-  //Guardar los datos en values
   const handleChangeCheck = (e) => {
     const { checked } = e.target;
-    setValues({
-      ...values,
+    setDishById({
+      ...dishById,
       status: checked,
     });
   };
 
-  //Enviar datos
   const handleSubmit = (e) => {
-    console.log("se envia valor");
     e.preventDefault();
-
     if (
-      values.dishName !== null &&
-      values.description !== null &&
-      values.price !== null &&
-      values.imagePath !== null &&
-      values.ingredient !== []
+      dishById.dishName !== null &&
+      dishById.description !== null &&
+      dishById.price !== null &&
+      dishById.imagePath !== null &&
+      dishById.ingredient !== []
     ) {
-      console.log(values);
-      addOrEdit(values);
-      setValues({ ...initialStateValues });
+      idDish ? editDish(idDish, dishById) : addDish(dishById);
+      setDishById({ ...initialStateValues });
     }
   };
 
-  //Logica para ingredientes
   const handleChangeIngre = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputList];
-    console.log(list);
+    const { value } = e.target;
+    const list = [...listOfIngredients];
     list[index] = value;
-    setInputList(list);
-    setValues({
-      ...values,
+    setListOfIngredients(list);
+    setDishById({
+      ...dishById,
       ingredient: list,
     });
   };
 
   const handleRemoveIngre = (index) => {
-    const list = [...inputList];
+    const list = [...listOfIngredients];
     list.splice(index, 1);
-    setInputList(list);
-    setValues({
-      ...values,
+    setListOfIngredients(list);
+    setDishById({
+      ...dishById,
       ingredient: list,
     });
   };
 
   const handleAddIngre = () => {
-    setInputList([...inputList, ""]);
+    setListOfIngredients([...listOfIngredients, ""]);
   };
 
-  const ingredients = inputList.map((x, i) => {
-    return (
-      <div className="modal__ingredient" key={x}>
-        <TextField
-          id="standard-basic"
-          label="ingrediente"
-          name="ingredient"
-          value={x}
-          onChange={(e) => handleChangeIngre(e, i)}
-        />
+  const Ingredients = () =>
+    listOfIngredients.map((x, i) => {
+      return (
+        <div className="modal__ingredient" key={x}>
+          <TextField
+            id="standard-basic"
+            label="ingrediente"
+            name="ingredient"
+            value={x}
+            onChange={(e) => handleChangeIngre(e, i)}
+            variant="standard"
+          />
 
-        <div className="modal__ingredient--buttons">
-          {inputList.length !== 1 && (
-            <div className="ingredient__buttons--delete">
-              <IconButton
-                aria-label="eliminar"
-                onClick={() => handleRemoveIngre(i)}
-              >
-                <HighlightOffIcon size="small" color="secondary" />
-              </IconButton>
-            </div>
-          )}
-          {inputList.length - 1 === i && (
-            <div className="ingredient__buttons--add">
-              <IconButton
-                color="primary"
-                aria-label="Añadir ingrediente"
-                onClick={handleAddIngre}
-              >
-                <AddIcon />
-              </IconButton>
-            </div>
-          )}
+          <div className="modal__ingredient--buttons">
+            {listOfIngredients.length !== 1 && (
+              <div className="ingredient__buttons--delete">
+                <IconButton
+                  aria-label="eliminar"
+                  onClick={() => handleRemoveIngre(i)}
+                >
+                  <RemoveCircleOutline size="small" color="action" />
+                </IconButton>
+              </div>
+            )}
+            {listOfIngredients.length - 1 === i && (
+              <div className="ingredient__buttons--add">
+                <IconButton
+                  color="primary"
+                  aria-label="Añadir ingrediente"
+                  onClick={handleAddIngre}
+                >
+                  <Add />
+                </IconButton>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    );
-  });
+      );
+    });
 
   return (
     <div className="modaldish">
@@ -190,10 +161,10 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
           <form className="modaldish__container" onSubmit={handleSubmit}>
             <div className="modaldish__containder--left">
               <div className="modaldish__image">
-                {values.imagePath !== null ? (
+                {dishById.imagePath !== null ? (
                   <img
                     className="image__dish"
-                    src={values.imagePath}
+                    src={dishById.imagePath}
                     alt="imagen 2"
                   />
                 ) : (
@@ -207,9 +178,10 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
                   id="standard-basic"
                   label="Precio"
                   name="price"
-                  value={values.price}
+                  value={dishById.price}
                   onChange={handleChange}
                   required={true}
+                  variant="standard"
                 />
               </div>
               <Button
@@ -217,10 +189,10 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
                 color="warning"
                 type="submit"
                 onClick={
-                  values.dishName !== null &&
-                  values.description !== null &&
-                  values.price !== null &&
-                  values.imagePath !== null
+                  dishById.dishName !== null &&
+                  dishById.description !== null &&
+                  dishById.price !== null &&
+                  dishById.imagePath !== null
                     ? close
                     : null
                 }
@@ -233,27 +205,32 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
                 id="standard-basic"
                 label="Nombre plato"
                 name="dishName"
-                value={values.dishName}
+                value={dishById.dishName}
                 onChange={handleChange}
                 required={true}
+                variant="standard"
               />
               <TextField
                 id="standard-textarea"
                 label="Descripción"
                 name="description"
-                value={values.description}
+                value={dishById.description}
                 multiline
                 onChange={handleChange}
                 required={true}
+                variant="standard"
               />
-              <div>{ingredients}</div>
+              <div>
+                <Ingredients />
+              </div>
 
               <FormControlLabel
+                label={"¿Adiciones?"}
                 control={
                   <Switch
-                    checked={values.status}
+                    checked={dishById.status}
                     onChange={handleChangeCheck}
-                    color="primary"
+                    color="warning"
                     name="status"
                   />
                 }
@@ -264,6 +241,6 @@ function ModalDish({ show, close, addOrEdit, idDish }) {
       </Modal>
     </div>
   );
-}
+};
 
 export default ModalDish;

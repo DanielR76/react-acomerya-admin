@@ -40,6 +40,13 @@ const DishesPage = () => {
 
   const handleCloseAlert = () => setVisibleAlert(false);
 
+  const handleCloseModal = () => {
+    setVisibleModalDish(false);
+    setTimeout(() => {
+      setSelectedEdit("");
+    }, 0);
+  };
+
   return (
     <div className="container__dishes">
       <div className="container__cards">
@@ -73,16 +80,10 @@ const DishesPage = () => {
       </div>
       <ModalDish
         idDish={selectedEdit}
-        addOrEdit={(e) =>
-          selectedEdit === "" ? addDish(e) : editDish(selectedEdit, e)
-        }
+        addDish={addDish}
+        editDish={editDish}
         show={visibleModalDish}
-        close={() => {
-          setVisibleModalDish(false);
-          setTimeout(() => {
-            setSelectedEdit("");
-          }, 0);
-        }}
+        close={handleCloseModal}
       />
       <AlertModal
         name={"eliminar el plato del menú"}
