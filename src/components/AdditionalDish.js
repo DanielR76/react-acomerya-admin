@@ -49,7 +49,6 @@ const AdditionalDish = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (additionalValue?.price !== "" && additionalValue?.name !== "") {
-      console.log("imprimeeeee");
       !editDish ? addAditional() : editAditional(editDish);
     }
     setEditDish("");

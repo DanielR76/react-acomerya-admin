@@ -1,47 +1,28 @@
-import React, { useEffect } from "react";
-import { Button, Card } from "react-bootstrap";
-import { db } from "../utils/firebase";
+import React from "react";
 
-function DishesCard(props) {
-  const getPlatos = async () => {
-    db.collection("dishDocument")
-      .where("restaurant", "==", 123465)
-      .onSnapshot((querySnapshot) => {
-        const state = [];
-        querySnapshot.forEach((doc) => {
-          state.push({
-            ...doc.data(),
-            id: doc.id,
-          });
-        });
-      });
-  };
+import { IconButton } from "@mui/material";
+import { Edit, RemoveCircleOutline } from "@mui/icons-material";
 
-  useEffect(() => {
-    getPlatos();
-  }, []);
-
-  const platos = props.map((todo, i) => {
-    return (
-      <div className="col-md-3">
-        <div className="card mt-3">
-          <Card.Img variant="top" src={todo.imagePath} />
-          <Card.Body>
-            <Card.Title>
-              {todo.dishName}
-              <Button variant="primary">Editar</Button>
-            </Card.Title>
-          </Card.Body>
+const DishesCard = ({ data, handleEdit, handleRemove }) => {
+  return (
+    <div className="card__dish__cont" key={data.id}>
+      <img className="card__dish--image" src={data.imagePath} alt="imageDish" />
+      <div className="card__dish--cont">
+        <div className="dish__name">{data.dishName}</div>
+        <div className="dish__method">
+          <IconButton aria-label="editar" onClick={() => handleEdit(data.id)}>
+            <Edit size="small" color="warning" />
+          </IconButton>
+          <IconButton
+            aria-label="eliminar"
+            onClick={() => handleRemove(data.id)}
+          >
+            <RemoveCircleOutline size="small" color="action" />
+          </IconButton>
         </div>
       </div>
-    );
-  });
-
-  return (
-    <div className="containerext">
-      <div className="row mt-5">{platos}</div>
     </div>
   );
-}
+};
 
 export default DishesCard;

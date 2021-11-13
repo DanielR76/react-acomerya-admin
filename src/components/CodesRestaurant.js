@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { TextField, IconButton } from "@mui/material";
+import { TextField, Button, IconButton } from "@mui/material";
 import { RemoveCircleOutline } from "@mui/icons-material";
 
 import AlertModal from "./AlertModal";
@@ -48,7 +48,7 @@ const CodesRestaurant = () => {
     });
   };
 
-  const handleCloseAlert = (action) => setShowAlert(action);
+  const handleCloseAlert = () => setShowAlert(false);
 
   const handleDelete = () => {
     setShowAlert(false);
@@ -97,18 +97,20 @@ const CodesRestaurant = () => {
             <label>{newCode.code}</label>
           </div>
         </form>
-        <button
-          className="login__form--submit"
+        <Button
+          variant="contained"
+          color="warning"
+          type="submit"
           onClick={isValidForm ? handleSubmit : generateCode}
         >
-          {isValidForm ? "Guardar" : "Generar código"}
-        </button>
+          {isValidForm ? "Guardar" : "Generar"}
+        </Button>
       </div>
       <AlertModal
         name={"eliminar el código y la mesa"}
         open={showAlert}
-        close={handleCloseAlert}
-        remove={handleDelete}
+        handleCloseAlert={handleCloseAlert}
+        handleConfirmAlert={handleDelete}
       />
     </>
   );

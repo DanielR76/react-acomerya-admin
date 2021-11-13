@@ -20,7 +20,7 @@ const initialValues = {
   password: "",
 };
 
-function AuthenticationPage({ history }) {
+const AuthenticationPage = ({ history }) => {
   const [, authDispatch] = useContext(AuthContext);
   const [showAlert, setShowAlert] = useState(false);
   const [values, setValues] = useState({ ...initialValues });
@@ -112,6 +112,6 @@ function AuthenticationPage({ history }) {
       </a>
     </div>
   );
-}
+};
 
 export default withRouter(AuthenticationPage);
